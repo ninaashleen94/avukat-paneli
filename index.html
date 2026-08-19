@@ -36,10 +36,171 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
 .muted{color:#64748b;font-size:13px}
 .hidden{display:none!important}
 .danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}.success{color:#067647;font-weight:800}
+.status-open{background:#dcfce7;color:#166534}.status-closed{background:#e5e7eb;color:#374151}
+.status-wait{background:#fef3c7;color:#92400e}.status-court{background:#dbeafe;color:#1d4ed8}
+.status-decision{background:#ede9fe;color:#6d28d9}.status-appeal{background:#ffedd5;color:#c2410c}
+.status-final{background:#d1fae5;color:#065f46}
+.action-declaration{background:#dbeafe!important;color:#1d4ed8!important;border-color:#93c5fd!important}
+.action-payment{background:#dcfce7!important;color:#166534!important;border-color:#86efac!important}
+.action-noop{background:#f3f4f6!important;color:#374151!important;border-color:#d1d5db!important}
+.work-item{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.work-item button{flex:1;min-width:160px;cursor:pointer;pointer-events:auto}
+.chrono{border-left:3px solid #dbe3ef;padding-left:12px}
+
 .pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:800}
 .deadline{font-size:17px;font-weight:900;margin-top:6px}
 .notice{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;margin:10px 0}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.area-nav{flex-direction:column}}
+</style>
+
+<style id="worklist-ui-fix">
+.worklist-shell{background:#eef6ff;border:1px solid #d7e9fb;border-radius:14px;padding:14px}
+.work-check{width:15px!important;height:15px!important;min-width:15px!important;max-width:15px!important;margin:3px 0 0 0!important;cursor:pointer}
+.work-check-label{display:flex!important;align-items:flex-start!important;gap:8px!important;cursor:pointer}
+.work-done-text{font-weight:700;color:#334155;white-space:nowrap}
+</style>
+
+<style id="keep-worklist-final">
+.worklist-shell{
+  background:#eef6ff!important;
+  border:1px solid #d7e9fb!important;
+  border-radius:14px!important;
+  padding:14px!important;
+}
+.work-task-card{
+  background:#f8fbff!important;
+  border:1px solid #dbeafe!important;
+  border-radius:12px!important;
+  padding:12px 14px!important;
+  margin:9px 0!important;
+}
+.work-task-row{display:flex!important;align-items:flex-start!important;gap:12px!important}
+.keep-check{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  width:20px!important;height:20px!important;
+  min-width:20px!important;
+  margin:1px 0 0!important;
+  border:2px solid #64748b!important;
+  border-radius:5px!important;
+  background:#fff!important;
+  cursor:pointer!important;
+  position:relative!important;
+}
+.keep-check:checked{
+  background:#16a34a!important;
+  border-color:#16a34a!important;
+}
+.keep-check:checked::after{
+  content:'✓';
+  position:absolute;
+  left:2px;top:-2px;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+}
+.work-task-title{
+  font-size:12pt!important;
+  line-height:1.35!important;
+  font-weight:600!important;
+  color:#1f2937!important;
+}
+.work-task-meta{font-size:12px!important;color:#64748b!important;margin-top:3px!important}
+.work-task-note{font-size:12px!important;color:#475569!important;margin-top:5px!important}
+.work-complete-status{
+  margin-top:7px!important;
+  font-weight:800!important;
+  color:#15803d!important;
+  font-size:12pt!important;
+}
+.work-task-card.completed .work-task-title{
+  text-decoration:line-through!important;
+  color:#64748b!important;
+}
+
+/* İş Listesi aksiyon butonları: her seçenek görünür ve renkli */
+#workButtons{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px!important;margin-top:8px}
+#workButtons [data-work-type]{
+  width:100%!important;
+  min-width:0!important;
+  min-height:46px!important;
+  border:2px solid!important;
+  border-radius:12px!important;
+  padding:10px 12px!important;
+  font-weight:800!important;
+  color:#172033!important;
+  background:#fff!important;
+  opacity:1!important;
+  visibility:visible!important;
+  display:block!important;
+  transition:transform .12s ease,box-shadow .12s ease,filter .12s ease!important;
+}
+#workButtons [data-work-type]:hover{transform:translateY(-1px);box-shadow:0 4px 12px #0f172a18;filter:brightness(.98)}
+#workButtons [data-work-type].selected{outline:3px solid #11182744;box-shadow:0 4px 12px #0f172a22}
+#workButtons [data-work-type="beyan hazırla"]{background:#dbeafe!important;border-color:#60a5fa!important}
+#workButtons [data-work-type="talep at"]{background:#ede9fe!important;border-color:#a78bfa!important}
+#workButtons [data-work-type="diğer"]{background:#f3f4f6!important;border-color:#9ca3af!important}
+#workNoteWrap.hidden{display:none!important}
+#workButtons [data-work-type="uyap a sun"]{background:#ede9fe!important;border-color:#a78bfa!important}
+#workButtons [data-work-type="tebligat kontrol et"]{background:#fef3c7!important;border-color:#f59e0b!important}
+#workButtons [data-work-type="müvekkil ara"]{background:#dcfce7!important;border-color:#4ade80!important}
+#workButtons [data-work-type="bilirkişi rapor beyan"]{background:#fce7f3!important;border-color:#f472b6!important}
+#workButtons [data-work-type="icra takibi aç"]{background:#fee2e2!important;border-color:#f87171!important}
+#workButtons [data-work-type="vekalet sun"]{background:#cffafe!important;border-color:#22d3ee!important}
+#workButtons [data-work-type="duruşma bekle"]{background:#ffedd5!important;border-color:#fb923c!important}
+#workButtons [data-work-type="banka haczi yaz"]{background:#e0f2fe!important;border-color:#38bdf8!important}
+#workButtons [data-work-type="tapu haczi yaz"]{background:#ecfccb!important;border-color:#84cc16!important}
+#workButtons [data-work-type="maaş haczi yaz"]{background:#f3e8ff!important;border-color:#c084fc!important}
+#workButtons [data-work-type="kesinleştirme at"]{background:#fef9c3!important;border-color:#eab308!important}
+#workButtons [data-work-type="dosya kapak hesabı iste"]{background:#fae8ff!important;border-color:#d946ef!important}
+@media(max-width:700px){#workButtons{grid-template-columns:1fr}}
+
+
+/* Tüm dosya seçim alanları için hızlı arama */
+.file-picker-search{
+  margin:8px 0 6px!important;
+  background:#f8fafc!important;
+  border:2px solid #cbd5e1!important;
+  border-radius:10px!important;
+}
+.file-picker-search:focus{
+  border-color:#3b82f6!important;
+  outline:none!important;
+  box-shadow:0 0 0 3px #3b82f633!important;
+}
+
+
+.file-picker{position:relative;width:100%}
+.file-picker-trigger{width:100%;text-align:left;padding:11px 14px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#172033;font:inherit;cursor:pointer}
+.file-picker-trigger::after{content:'⌄';float:right;color:#64748b;font-weight:800}
+.file-picker-popup{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:100;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 12px 30px #0f172a22;padding:8px}
+.file-picker-input{width:100%;padding:10px;border:1px solid #93c5fd;border-radius:9px;margin-bottom:7px}
+.file-picker-results{max-height:240px;overflow:auto}
+.file-picker-option{display:block;width:100%;text-align:left;border:0;background:#fff;padding:10px;border-radius:8px;cursor:pointer;font:inherit}
+.file-picker-option:hover{background:#eff6ff}
+.file-picker-empty{padding:10px;color:#64748b;font-size:13px}
+
+
+.completed-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.filter-tab{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:9px;padding:8px 13px;font-weight:800;cursor:pointer}
+.filter-tab.active{background:#172033;color:#fff;border-color:#172033}
+#completedWorkSearch{min-width:260px;flex:1}
+.completed-work-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:8px 0;background:#fff;border:1px solid #e2e8f0;border-radius:11px}
+.completed-work-title{font-weight:800}
+.completed-work-meta{font-size:12px;color:#64748b;margin-top:3px}
+.completed-work-empty{padding:18px;text-align:center;color:#64748b;border:1px dashed #cbd5e1;border-radius:11px}
+.completed-area-badge{display:inline-block;margin-left:7px;padding:3px 7px;border-radius:7px;font-size:11px;font-weight:800}
+.completed-area-badge.ceza{background:#fee2e2;color:#991b1b}.completed-area-badge.icra{background:#fef3c7;color:#92400e}.completed-area-badge.hukuk{background:#dbeafe;color:#1e40af}
+.completed-menu-btn{background:#dcfce7!important;color:#166534!important;border-color:#86efac!important}
+.completed-home-card{width:100%;display:block;text-align:left;margin:14px 0;border:2px solid #86efac;border-radius:14px;background:#dcfce7;color:#166534;padding:15px 17px;cursor:pointer}
+.completed-home-card:hover{background:#bbf7d0;border-color:#4ade80}
+.completed-home-card>div{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:17px}
+.completed-home-card span{font-size:24px;font-weight:900}
+.completed-home-card small{display:block;margin-top:5px;color:#166534}
+.completed-work-card{border-left:5px solid #22c55e!important;background:#f0fdf4!important}
+.completed-work-card .secondary{border-color:#86efac;background:#fff}
+
 </style>
 </head>
 <body>
@@ -54,8 +215,8 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
 
   <div class="menu" id="mainMenu">
     <button type="button" data-view="home">🏠 Ana Sayfa</button>
-    <button type="button" data-view="files">📁 Dosyalar</button>
-    <button type="button" data-view="calendar">📅 Duruşmalar</button>
+    <button type="button" data-view="files">📁 Dosyalar</button><button type="button" data-view="fileArchive">🗄️ Dosya Arşivi</button>
+    <button type="button" data-view="calendar">📅 Duruşmalar</button><button type="button" data-view="worklist">📋 İş Listesi</button><button type="button" class="completed-menu-btn" data-view="completedWorkSection">✅ Tamamlanmış İşler</button>
     <button type="button" data-view="sulhCeza" id="sulhMenu">⚖️ Sulh Ceza</button>
     <button type="button" data-view="reminders">🔔 Hatırlatıcılar</button>
     <button type="button" data-view="notifications">📨 Genel Tebligat</button>
@@ -69,10 +230,20 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
       <div class="stat">Yaklaşan duruşma<b id="statHearings">0</b></div>
       <div class="stat">Yaklaşan işler<b id="statReminders">0</b></div>
     </div>
+    <button type="button" class="completed-home-card" data-view="completedWorkSection">
+      <div><strong>✅ Tamamlanmış İşler</strong><span id="homeCompletedCount">0</span></div>
+      <small>Tamamlanan işleri görüntüle, Ceza / İcra / Hukuk filtrele ve ara</small>
+    </button>
     <div class="card" style="margin-top:14px">
       <h3>⚡ Hızlı Gelişme Ekle</h3>
       <div class="row">
-        <label>Dosya<select id="quickFile"></select></label>
+        <label>Dosya
+<div class="file-picker" id="quickFilePicker">
+  <button type="button" class="file-picker-trigger" data-open-picker="quickFilePicker">Dosya seç</button>
+  <div class="file-picker-popup hidden"><input class="file-picker-input" type="search" placeholder="Dosya ara..."><div class="file-picker-results"></div></div>
+  <select id="quickFile" class="hidden"></select>
+</div>
+</label>
         <label>Tarih<input id="quickDate" type="date"></label>
       </div>
       <label>Açıklama<textarea id="quickText" placeholder="Dosyada ne oldu?"></textarea></label>
@@ -94,7 +265,13 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
   <section id="fileForm" class="card hidden" data-section>
     <h2>Yeni Dosya</h2>
     <div class="row"><label>Dosya no<input id="fileNo"></label><label>Kısa başlık<input id="fileTitle"></label></div>
-    <div class="row"><label>Açılış tarihi<input id="fileOpening" type="date"></label><label>Durum<select id="fileStatus"><option>Devam ediyor</option><option>Beklemede</option><option>Sonuçlandı</option></select></label></div>
+    <div class="row">
+<label>Açılış tarihi<input id="fileOpening" type="date"></label>
+<label>Durum<select id="fileStatus">
+<option value="açık">Açık</option><option value="kapalı">Kapalı</option>
+<option value="bilirkişi bekliyor">Bilirkişi bekliyor</option><option value="duruşma bekliyor">Duruşma bekliyor</option>
+<option value="karar">Karar</option><option value="istinafta">İstinafta</option><option value="temyizde">Temyizde</option><option value="kesinleşti">Kesinleşti</option>
+</select></label></div>
     <label>Not<textarea id="fileNote"></textarea></label>
     <button type="button" class="primary" data-action="saveFile">Kaydet</button>
     <button type="button" class="secondary" data-view="files">Vazgeç</button>
@@ -103,6 +280,7 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
   <section id="detail" class="card hidden" data-section>
     <button type="button" class="secondary" data-view="files">← Dosyalara dön</button>
     <h2 id="detailTitle"></h2><div id="detailMeta" class="muted"></div>
+<div id="fileStatusActions" class="card"></div>
     <div class="card">
       <h3>📜 Dosya Kronolojisi</h3>
       <div class="row"><label>Tarih<input id="devDate" type="date"></label><button type="button" class="primary" data-action="addDevelopment">+ Gelişme Ekle</button></div>
@@ -112,11 +290,32 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
     <button type="button" class="primary" data-action="addCurrentReminder">🔔 Hatırlatıcı ekle</button>
   </section>
 
-  <section id="calendar" class="card hidden" data-section>
-    <h2>Duruşmalar</h2>
-    <button type="button" class="primary" data-action="addHearing">+ Duruşma</button>
-    <div id="hearingList"></div>
-  </section>
+  <section id="worklist" class="card hidden" data-section>
+<h2>📋 İş Listesi</h2>
+<div class="card">
+<h3>Yeni İş</h3>
+<div class="row">
+<label>Birim<select id="workArea"><option value="ceza">Ceza</option><option value="hukuk">Hukuk</option><option value="icra">İcra</option></select></label>
+<label>Dosya
+<div class="file-picker" id="workFilePicker">
+  <button type="button" class="file-picker-trigger" data-open-picker="workFilePicker">Dosya seç</button>
+  <div class="file-picker-popup hidden"><input class="file-picker-input" type="search" placeholder="Dosya ara..."><div class="file-picker-results"></div></div>
+  <select id="workFile" class="hidden"></select>
+</div>
+</label>
+</div>
+<div id="workButtons" class="work-item"></div>
+<div id="workNoteWrap" class="hidden" style="margin-top:10px"><label>Yapılacak iş / not<textarea id="workNote" placeholder="Yapılacak iş / not"></textarea></label></div>
+<button type="button" class="primary" data-action="saveWork">İşi Ekle</button>
+</div>
+<div id="workList"></div>
+</section>
+
+<section id="calendar" class="card hidden" data-section>
+<h2>📅 Duruşma Takvimi</h2>
+<button type="button" class="primary" data-action="addHearing">+ Duruşma Ekle</button>
+<div id="hearingList"></div>
+</section>
 
   <section id="reminders" class="card hidden" data-section>
     <h2>Hatırlatıcılar</h2>
@@ -133,7 +332,13 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
         <label>Birim<select id="notifArea">
           <option value="">Birim seçin</option><option value="ceza">Ceza</option><option value="hukuk">Hukuk</option><option value="icra">İcra</option>
         </select></label>
-        <label>Dosya<select id="notifFile"><option value="">Önce birim seçin</option></select></label>
+        <label>Dosya
+<div class="file-picker" id="notifFilePicker">
+  <button type="button" class="file-picker-trigger" data-open-picker="notifFilePicker">Dosya seç</button>
+  <div class="file-picker-popup hidden"><input class="file-picker-input" type="search" placeholder="Dosya ara..."><div class="file-picker-results"></div></div>
+  <select id="notifFile" class="hidden"><option value="">Önce birim seçin</option></select>
+</div>
+</label>
       </div>
       <div class="row">
         <label>Tebligatın geldiği tarih<input id="notifDate" type="date"></label>
@@ -147,7 +352,18 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
     <div id="notificationList"></div>
   </section>
 
-  <section id="notificationArchive" class="card hidden" data-section>
+  <section id="fileArchive" class="card hidden" data-section>
+<h2>🗄️ Dosya Arşivi</h2>
+<p class="muted">Hukuk ve Ceza ayrı arşivlenir. İcra dosyalarında kapalı olanlar otomatik olarak arşivlenir; ayrıca açık dosyayı da elle arşivleyebilirsin.</p>
+<div class="area-nav">
+<button type="button" data-file-archive-area="ceza">⚖️ Ceza</button>
+<button type="button" data-file-archive-area="hukuk">🏛️ Hukuk</button>
+<button type="button" data-file-archive-area="icra">💰 İcra</button>
+</div>
+<div id="fileArchiveList"></div>
+</section>
+
+<section id="notificationArchive" class="card hidden" data-section>
     <h2>🗄️ Tebligat Arşivi</h2>
     <p class="muted">Arşive aldığın tebligatlar aktif iş listesinden çıkarılır, ancak burada kalıcı olarak saklanır.</p>
     <div class="area-nav" id="archiveAreaNav">
@@ -173,6 +389,25 @@ label input,label select{display:block;margin-top:6px;font-weight:400}
     <button type="button" class="primary" data-action="saveDetention">Kaydet</button>
     <button type="button" class="secondary" data-view="sulhCeza">Vazgeç</button>
   </section>
+
+<section id="completedWorkSection" class="card hidden" data-section>
+  <div class="section-head">
+    <div>
+      <h2>Tamamlanmış İşler</h2>
+      <div class="muted">Tamamlanan işleri birime göre filtrele ve ara.</div>
+    </div>
+  </div>
+  <div class="completed-toolbar">
+    <div class="filter-tabs" id="completedAreaTabs">
+      <button type="button" class="filter-tab active" data-completed-area="all">Tümü</button>
+      <button type="button" class="filter-tab" data-completed-area="ceza">Ceza</button>
+      <button type="button" class="filter-tab" data-completed-area="icra">İcra</button>
+      <button type="button" class="filter-tab" data-completed-area="hukuk">Hukuk</button>
+    </div>
+    <input id="completedWorkSearch" type="search" placeholder="Tamamlanmış işlerde ara...">
+  </div>
+  <div id="completedWorkList"></div>
+</section>
 </main>
 
 <script>
@@ -210,9 +445,48 @@ function loadDB(){
 }
 let db=loadDB();
 function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));}
+function ensureDB(){
+  // İş listesi kayıtlarını koru; tamamlanan işler de kalıcı olarak saklanır.
+  if(!Array.isArray(db.workItems)) db.workItems=[];
+  db.files.forEach(f=>{
+    if(!f.status || f.status==='Devam ediyor')f.status='açık';
+    if(typeof f.archived!=='boolean')f.archived=false;
+    if(f.area==='icra' && f.status==='kapalı')f.archived=true;
+    if((f.area==='ceza'||f.area==='hukuk') && f.status==='kesinleşti')f.archived=true;
+  });
+  db.notifications.forEach(n=>{if(typeof n.archived!=='boolean')n.archived=false});
+  saveDB();
+}
+ensureDB();
+
 
 function areaLabel(a=area){return a==='ceza'?'Ceza':a==='hukuk'?'Hukuk':'İcra'}
-function activeFiles(){return db.files.filter(f=>f.area===area)}
+function activeFiles(){return db.files.filter(f=>f.area===area&&!f.archived)}
+function fileSearchMatch(f,q){
+  q=String(q||'').trim().toLocaleLowerCase('tr-TR');
+  if(!q)return true;
+  return (String(f.no||'')+' '+String(f.title||'')).toLocaleLowerCase('tr-TR').includes(q);
+}
+function fillFileSelect(selectId, files, placeholder, searchId){
+  const sel=document.getElementById(selectId);
+  if(!sel)return;
+  const previous=sel.value;
+  const picker=sel.closest('.file-picker');
+  const input=picker?.querySelector('.file-picker-input');
+  const results=picker?.querySelector('.file-picker-results');
+  const trigger=picker?.querySelector('.file-picker-trigger');
+  const q=input?.value||'';
+  const filtered=files.filter(f=>fileSearchMatch(f,q));
+  sel.innerHTML=(placeholder?`<option value="">${placeholder}</option>`:'')+
+    filtered.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join('');
+  if(previous && filtered.some(f=>String(f.id)===String(previous))) sel.value=previous;
+  if(results) results.innerHTML=filtered.map(f=>`<button type="button" class="file-picker-option" data-pick-file="${f.id}" data-pick-select="${selectId}"><b>${esc(f.no)}</b>${f.title?' — '+esc(f.title):''}</button>`).join('')||'<div class="file-picker-empty">Aradığın dosya bulunamadı.</div>';
+  if(trigger){
+    const selected=files.find(f=>String(f.id)===String(sel.value));
+    trigger.textContent=selected ? `${selected.no}${selected.title?' — '+selected.title:''}` : (placeholder||'Dosya seç');
+  }
+}
+
 
 function setArea(a){
   if(!['ceza','hukuk','icra'].includes(a))return;
@@ -230,6 +504,9 @@ function showView(id){
   document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
   if(id==='home')renderHome();
   if(id==='files')renderFiles();
+  if(id==='fileArchive')renderFileArchive();
+  if(id==='worklist'){renderWorkForm();renderWorkList();}
+  if(id==='completedWorkSection'){renderCompletedWorkList();}
   if(id==='detail')renderDetail();
   if(id==='calendar')renderHearings();
   if(id==='reminders')renderReminders();
@@ -239,7 +516,7 @@ function showView(id){
 }
 
 function renderAll(){
-  renderHome();renderFiles();renderHearings();renderReminders();renderNotificationsForm();renderArchive();renderDetention();
+  renderHome();renderFiles();renderHearings();renderReminders();renderNotificationsForm();renderArchive();renderFileArchive();renderDetention();renderWorkForm();renderWorkList();renderCompletedWorkList();
   document.querySelectorAll('[data-area]').forEach(b=>b.classList.toggle('active',b.dataset.area===area));
   document.getElementById('sulhMenu').classList.toggle('hidden',area!=='ceza');
 }
@@ -258,7 +535,10 @@ function saveFile(){
 function renderFiles(){
   const q=(document.getElementById('fileSearch').value||'').toLowerCase();
   const arr=activeFiles().filter(f=>(f.no+' '+(f.title||'')).toLowerCase().includes(q));
-  document.getElementById('fileList').innerHTML=arr.map(f=>`<div class="item clickable" data-file="${f.id}"><b>${esc(f.no)}</b> ${esc(f.title||'')}<div class="muted">${esc(f.status)} · ${formatDate(f.opening)}</div></div>`).join('')||'<p class="muted">Bu birimde dosya yok.</p>';
+  document.getElementById('fileList').innerHTML=arr.map(f=>`<div class="item clickable" data-file="${f.id}">
+<b>${esc(f.no)}</b> ${esc(f.title||'')} <span class="pill">${esc(f.status)}</span>
+<div class="muted">${esc(areaLabel(f.area))} · ${formatDate(f.opening)}</div>
+</div>`).join('')||'<p class="muted">Bu birimde dosya yok.</p>';
 }
 function openFile(id){currentFile=id;showView('detail')}
 function renderDetail(){
@@ -266,8 +546,15 @@ function renderDetail(){
   if(!f)return;
   document.getElementById('detailTitle').textContent=f.no+(f.title?' — '+f.title:'');
   document.getElementById('detailMeta').textContent=areaLabel(f.area)+' · '+f.status+' · Açılış '+formatDate(f.opening);
-  const arr=db.developments.filter(d=>String(d.fileId)===String(f.id)).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
-  document.getElementById('timeline').innerHTML=arr.map(d=>`<div class="item"><b>${formatDate(d.date)}</b><div>${esc(d.text)}</div></div>`).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+  const arr=db.developments.filter(d=>String(d.fileId)===String(f.id)).sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id);
+  document.getElementById('timeline').innerHTML=arr.map(d=>`<div class="item chrono"><b>${formatDate(d.date)}</b><div>${esc(d.text)}</div></div>`).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+  const sa=document.getElementById('fileStatusActions');
+  const statusOptions=['açık','kapalı','bilirkişi bekliyor','duruşma bekliyor','karar','istinafta','temyizde','kesinleşti'];
+  sa.innerHTML=`<h3>📌 Dosya Durumu</h3>
+    <div class="row"><label>Durum<select id="detailStatus">${statusOptions.map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s[0].toUpperCase()+s.slice(1)}</option>`).join('')}</select></label>
+    <button type="button" class="primary" data-action="saveFileStatus">Durumu Kaydet</button></div>
+    <button type="button" class="secondary" data-action="archiveCurrentFile">🗄️ Dosyayı Arşive Kaldır</button>`;
+
   document.getElementById('devDate').value=today();
 }
 function addDevelopment(){
@@ -285,9 +572,8 @@ function addQuickDevelopment(){
   document.getElementById('quickText').value='';saveDB();renderHome();
 }
 function renderQuick(){
-  const q=document.getElementById('quickFile');
   const arr=activeFiles();
-  q.innerHTML=arr.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join('')||'<option value="">Dosya yok</option>';
+  fillFileSelect('quickFile',arr,'Dosya yok','quickFileSearch');
   document.getElementById('quickDate').value=today();
 }
 function renderNotificationAlerts(){
@@ -339,6 +625,9 @@ function renderHome(){
   document.getElementById('statFiles').textContent=fs.length;
   document.getElementById('statHearings').textContent=hs.filter(h=>h.date>=today()).length;
   document.getElementById('statReminders').textContent=rs.filter(r=>r.date>=today()).length;
+  const completedCount=(db.workItems||[]).filter(w=>w.done===true).length;
+  const completedCountEl=document.getElementById('homeCompletedCount');
+  if(completedCountEl)completedCountEl.textContent=completedCount;
   const recent=db.developments.filter(d=>{const f=db.files.find(x=>String(x.id)===String(d.fileId));return f&&f.area===area}).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,8);
   document.getElementById('recent').innerHTML=recent.map(d=>{const f=db.files.find(x=>String(x.id)===String(d.fileId));return `<div class="item clickable" data-file="${f.id}"><b>${formatDate(d.date)} · ${esc(f.no)}</b><div>${esc(d.text)}</div></div>`}).join('')||'<p class="muted">Henüz gelişme yok.</p>';
   renderNotificationAlerts();
@@ -348,11 +637,27 @@ function renderHome(){
 function addHearing(){
   const file=prompt('Dosya numarası?');if(!file)return;
   const date=prompt('Duruşma tarihi (YYYY-AA-GG)?',today());if(!date)return;
-  db.hearings.push({id:Date.now()+Math.random(),area,file,date});saveDB();renderHearings();renderHome();
+  const note=prompt('Duruşmada yapılacaklar / not?',''); 
+  db.hearings.push({id:Date.now()+Math.random(),area,file,date,note:note||'',done:false});
+  saveDB();renderHearings();renderHome();
+}
+function markHearingDone(id){
+  const h=db.hearings.find(x=>String(x.id)===String(id));if(!h)return;
+  const next=prompt('Yeni duruşma tarihi (YYYY-AA-GG)?');
+  const nextNote=prompt('Yeni duruşmada yapılacaklar / not?','');
+  h.done=true;h.doneAt=today();
+  if(next){
+    db.hearings.push({id:Date.now()+Math.random(),area:h.area,file:h.file,date:next,note:nextNote||'',done:false,previousHearingId:h.id});
+  }
+  saveDB();renderHearings();renderHome();
 }
 function renderHearings(){
   const arr=db.hearings.filter(h=>h.area===area).sort((a,b)=>a.date.localeCompare(b.date));
-  document.getElementById('hearingList').innerHTML=arr.map(h=>`<div class="item"><b>${formatDate(h.date)}</b> — ${esc(h.file)}</div>`).join('')||'<p class="muted">Duruşma yok.</p>';
+  document.getElementById('hearingList').innerHTML=arr.map(h=>`<div class="item">
+    <b>${formatDate(h.date)}</b> — ${esc(h.file)} ${h.done?'<span class="pill">Yapıldı</span>':'<span class="pill">Bekliyor</span>'}
+    <div class="muted">${esc(h.note||'')}</div>
+    ${!h.done?`<button type="button" class="secondary" data-hearing-done="${h.id}">✅ Duruşma Yapıldı → Yeni Duruşma Ekle</button>`:''}
+  </div>`).join('')||'<p class="muted">Duruşma yok.</p>';
 }
 function addReminder(current=false){
   const date=prompt('Hatırlatıcı tarihi (YYYY-AA-GG)?',today());if(!date)return;
@@ -463,7 +768,7 @@ function renderNotificationsForm(){
   const a=document.getElementById('notifArea');
   a.value=area;
   const files=activeFiles();
-  document.getElementById('notifFile').innerHTML=files.length?'<option value="">Dosya seçin</option>'+files.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join(''):'<option value="">Bu birimde dosya yok</option>';
+  fillFileSelect('notifFile',files,'Dosya seçin','notifFileSearch');
   document.getElementById('notifDuration').innerHTML='<option value="">Süre seçin</option>'+durationOptions(area);
   if(!document.getElementById('notifDate').value)document.getElementById('notifDate').value=today();
   previewNotification();
@@ -596,6 +901,159 @@ function unarchiveNotification(id){
   renderNotificationAlerts();
 }
 
+
+let fileArchiveArea='ceza';
+
+function statusClass(s){
+  const m={'açık':'status-open','kapalı':'status-closed','bilirkişi bekliyor':'status-wait','duruşma bekliyor':'status-court','karar':'status-decision','istinafta':'status-appeal','temyizde':'status-appeal','kesinleşti':'status-final'};
+  return m[s]||'';
+}
+function saveFileStatus(){
+  const f=db.files.find(x=>String(x.id)===String(currentFile)); if(!f)return;
+  const s=document.getElementById('detailStatus').value; f.status=s;
+  if(s==='kesinleşti' && (f.area==='ceza'||f.area==='hukuk')) f.archived=true;
+  if(s==='kapalı' && f.area==='icra') f.archived=true;
+  saveDB();renderAll();showView(f.archived?'fileArchive':'detail');
+}
+function archiveCurrentFile(){
+  const f=db.files.find(x=>String(x.id)===String(currentFile));if(!f)return;
+  if(!confirm('Bu dosyayı arşive kaldırmak istiyor musun?'))return;
+  f.archived=true;f.archivedAt=today();saveDB();renderAll();showView('fileArchive');
+}
+function renderFileArchive(){
+  const el=document.getElementById('fileArchiveList');if(!el)return;
+  const arr=db.files.filter(f=>f.archived&&f.area===fileArchiveArea).sort((a,b)=>String(b.archivedAt||'').localeCompare(String(a.archivedAt||'')));
+  el.innerHTML=arr.map(f=>`<div class="item"><b>${esc(f.no)}</b> ${esc(f.title||'')} <span class="pill ${statusClass(f.status)}">${esc(f.status)}</span>
+  <div class="muted">${formatDate(f.opening)} · Arşiv: ${formatDate(f.archivedAt)}</div>
+  <button type="button" class="secondary" data-unarchive-file="${f.id}">↩️ Aktif Dosyalara Geri Al</button></div>`).join('')||'<p class="muted">Bu arşivde dosya yok.</p>';
+}
+function unarchiveFile(id){
+  const f=db.files.find(x=>String(x.id)===String(id));if(!f)return;
+  f.archived=false;delete f.archivedAt;saveDB();renderAll();renderFileArchive();
+}
+function workOptions(a){
+  let x=['beyan hazırla','talep at','uyap a sun','tebligat kontrol et','müvekkil ara','bilirkişi rapor beyan','icra takibi aç','vekalet sun','duruşma bekle','diğer'];
+  if(a==='icra')x.push('banka haczi yaz','tapu haczi yaz','maaş haczi yaz','kesinleştirme at','dosya kapak hesabı iste');
+  return x;
+}
+function syncWorkNote(){
+  const selected=document.getElementById('workButtons')?.dataset.selected||'';
+  const wrap=document.getElementById('workNoteWrap');
+  if(wrap)wrap.classList.toggle('hidden',selected!=='diğer');
+}
+function renderWorkForm(){
+  const a=document.getElementById('workArea').value;
+  const fs=db.files.filter(f=>f.area===a&&!f.archived);
+  const currentFile=document.getElementById('workFile').value;
+  const currentType=document.getElementById('workButtons').dataset.selected||'';
+  fillFileSelect('workFile',fs,'Dosya yok','workFileSearch');
+  if(currentFile && Array.from(document.getElementById('workFile').options).some(o=>String(o.value)===String(currentFile))){
+    document.getElementById('workFile').value=currentFile;
+  }
+  const wb=document.getElementById('workButtons');
+  wb.innerHTML=workOptions(a).map(x=>`<button type="button" class="secondary" data-work-type="${esc(x)}">${esc(x)}</button>`).join('');
+  wb.dataset.selected=workOptions(a).includes(currentType)?currentType:'';
+  document.querySelectorAll('[data-work-type]').forEach(b=>b.classList.toggle('selected',b.dataset.workType===wb.dataset.selected));
+  syncWorkNote();
+}
+function addWorkItem(type){
+  const fileId=document.getElementById('workFile').value;
+  const a=document.getElementById('workArea').value;
+  const note=document.getElementById('workNote').value.trim();
+  if(!fileId){alert('Önce dosya seç.');return}
+  if(type==='diğer'&&!note){alert('Diğer seçeneği için yapılacak iş / not yaz.');document.getElementById('workNote').focus();return}
+  db.workItems.push({id:Date.now()+Math.random(),fileId,area:a,type,note,createdAt:new Date().toISOString(),done:false,completedAt:null});
+  saveDB();
+  document.getElementById('workNote').value='';
+  document.getElementById('workButtons').dataset.selected='';
+  document.querySelectorAll('[data-work-type]').forEach(b=>b.classList.remove('selected'));
+  syncWorkNote();
+  renderWorkList();
+}
+function saveWork(){
+  const type=document.getElementById('workButtons').dataset.selected;
+  if(!type){alert('Önce yapılacak işi seç.');return}
+  addWorkItem(type);
+}
+function toggleWorkDone(id,checked){
+  const w=db.workItems.find(x=>String(x.id)===String(id));
+  if(!w)return;
+  w.done=!!checked;
+  w.completedAt=w.done?new Date().toISOString():null;
+  saveDB();
+  renderWorkList();
+}
+
+
+let completedWorkArea='all';
+
+function renderCompletedWorkList(){
+  const root=document.getElementById('completedWorkList');
+  if(!root)return;
+  const q=(document.getElementById('completedWorkSearch')?.value||'').trim().toLocaleLowerCase('tr-TR');
+  let items=(db.workItems||[]).filter(w=>w.done===true);
+  if(completedWorkArea!=='all') items=items.filter(w=>w.area===completedWorkArea);
+  items=items.filter(w=>{
+    const f=db.files.find(x=>String(x.id)===String(w.fileId));
+    return !q || [w.type,w.note,w.area,f?.no,f?.title].join(' ').toLocaleLowerCase('tr-TR').includes(q);
+  }).sort((a,b)=>new Date(b.completedAt||b.createdAt||0)-new Date(a.completedAt||a.createdAt||0));
+
+  if(!items.length){root.innerHTML='<div class="completed-work-empty">Bu filtreye uygun tamamlanmış iş bulunamadı.</div>';return;}
+  root.innerHTML=items.map(w=>{
+    const f=db.files.find(x=>String(x.id)===String(w.fileId));
+    const area=w.area||f?.area||'';
+    const label=area==='ceza'?'Ceza':area==='icra'?'İcra':area==='hukuk'?'Hukuk':area;
+    return `<div class="completed-work-card">
+      <div>
+        <div class="completed-work-title">${esc(w.type||'İş')} <span class="completed-area-badge ${esc(area)}">${esc(label)}</span></div>
+        <div class="completed-work-meta">${f?esc(f.no)+(f.title?' — '+esc(f.title):''):'Dosya bulunamadı'}${w.note?' · '+esc(w.note):''}${w.completedAt?' · '+new Date(w.completedAt).toLocaleString('tr-TR'):''}</div>
+      </div>
+      <button type="button" class="secondary" data-reopen-work="${esc(w.id)}">Tekrar Aç</button>
+    </div>`;
+  }).join('');
+}
+
+function renderWorkList(){
+  const el=document.getElementById('workList');if(!el)return;
+  const active=db.workItems.filter(w=>!w.done).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt)));
+  const completed=db.workItems.filter(w=>w.done).sort((a,b)=>String(b.completedAt||'').localeCompare(String(a.completedAt||'')));
+
+  const card=(w)=>{
+    const f=db.files.find(x=>String(x.id)===String(w.fileId));
+    return `<div class="item work-task-card ${w.done?'completed':''}">
+      <div class="work-task-row">
+        <input type="checkbox" class="keep-check" data-toggle-work="${w.id}" ${w.done?'checked':''} aria-label="İş tamamlandı">
+        <div class="work-task-content">
+          <div class="work-task-title">${esc(w.type)}</div>
+          <div class="work-task-meta"><b>${esc(f?.no||'Dosya')}</b>${f?.title?' — '+esc(f.title):''} · ${formatDate(w.createdAt)}</div>
+          ${w.note?`<div class="work-task-note">${esc(w.note)}</div>`:''}
+          ${w.done?'<div class="work-complete-status">✓ Tamamlandı</div>':''}
+        </div>
+      </div>
+    </div>`;
+  };
+
+  el.innerHTML=`
+    <div class="card">
+      <h3>📋 Açık İşler <span class="pill">${active.length}</span></h3>
+      ${active.map(card).join('')||'<p class="muted">Açık iş yok.</p>'}
+    </div>
+    <div class="card">
+      <h3>✅ Tamamlanmış İşler <span class="pill">${completed.length}</span></h3>
+      ${completed.map(card).join('')||'<p class="muted">Henüz tamamlanmış iş yok.</p>'}
+    </div>`;
+}
+function selectWorkType(type){
+  const wb=document.getElementById('workButtons');
+  wb.dataset.selected=type;
+  document.querySelectorAll('[data-work-type]').forEach(b=>b.classList.toggle('selected',b.dataset.workType===type));
+  syncWorkNote();
+  if(type==='diğer')document.getElementById('workNote').focus();
+}
+function finishWork(id){
+  const w=db.workItems.find(x=>String(x.id)===String(id));if(!w)return;
+  w.done=true;w.completedAt=today();saveDB();renderWorkList();
+}
 /* Sulh Ceza */
 function newDetention(){
   if(area!=='ceza'){alert('Sulh Ceza yalnızca Ceza biriminde kullanılabilir.');return}
@@ -621,6 +1079,76 @@ function advanceDetention(id){
   x.start=x.next;x.next=addDaysLocal(x.next,30);saveDB();renderDetention();
 }
 
+/* Entegre dosya seçme pencereleri */
+
+document.addEventListener('click',function(e){
+  const tab=e.target.closest('[data-completed-area]');
+  if(tab){
+    completedWorkArea=tab.dataset.completedArea;
+    document.querySelectorAll('[data-completed-area]').forEach(b=>b.classList.toggle('active',b===tab));
+    renderCompletedWorkList();
+    return;
+  }
+  const reopen=e.target.closest('[data-reopen-work]');
+  if(reopen){
+    const item=(db.workItems||[]).find(w=>String(w.id)===String(reopen.dataset.reopenWork));
+    if(item){item.done=false;item.completedAt=null;saveDB();renderWorkList();renderCompletedWorkList();}
+    return;
+  }
+});
+document.addEventListener('input',function(e){
+  if(e.target.id==='completedWorkSearch')renderCompletedWorkList();
+});
+document.addEventListener('click',function(e){
+  const open=e.target.closest('[data-open-picker]');
+  if(open){
+    document.querySelectorAll('.file-picker-popup').forEach(p=>p.classList.add('hidden'));
+    const picker=document.getElementById(open.dataset.openPicker);
+    if(!picker)return;
+    picker.querySelector('.file-picker-popup').classList.remove('hidden');
+    const input=picker.querySelector('.file-picker-input');
+    input.value='';
+    input.focus();
+    input.dispatchEvent(new Event('input',{bubbles:true}));
+    return;
+  }
+  const pick=e.target.closest('[data-pick-file]');
+  if(pick){
+    const sel=document.getElementById(pick.dataset.pickSelect);
+    const picker=sel?.closest('.file-picker');
+    if(sel){
+      sel.value=pick.dataset.pickFile;
+      const opt=sel.options[sel.selectedIndex];
+      picker.querySelector('.file-picker-trigger').textContent=opt?.textContent||'Dosya seç';
+      picker.querySelector('.file-picker-popup').classList.add('hidden');
+      sel.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    return;
+  }
+  if(!e.target.closest('.file-picker')) document.querySelectorAll('.file-picker-popup').forEach(p=>p.classList.add('hidden'));
+});
+document.addEventListener('input',function(e){
+  const input=e.target.closest('.file-picker-input');
+  if(!input)return;
+  const picker=input.closest('.file-picker');
+  const sel=picker.querySelector('select');
+  let files=[];
+  if(sel.id==='quickFile') files=activeFiles();
+  if(sel.id==='workFile'){
+    const a=document.getElementById('workArea').value;
+    files=db.files.filter(f=>f.area===a&&!f.archived);
+  }
+  if(sel.id==='notifFile'){
+    const a=document.getElementById('notifArea').value;
+    files=db.files.filter(f=>f.area===a&&!f.archived);
+  }
+  fillFileSelect(sel.id,files,'Dosya seç',null);
+  input.value=e.target.value;
+  const q=input.value;
+  const filtered=files.filter(f=>fileSearchMatch(f,q));
+  picker.querySelector('.file-picker-results').innerHTML=filtered.map(f=>`<button type="button" class="file-picker-option" data-pick-file="${f.id}" data-pick-select="${sel.id}"><b>${esc(f.no)}</b>${f.title?' — '+esc(f.title):''}</button>`).join('')||'<div class="file-picker-empty">Aradığın dosya bulunamadı.</div>';
+});
+
 /* Tek ve kalıcı event delegation: hiçbir render işlemi menü butonlarının eventini silmez. */
 document.addEventListener('click',function(e){
   const areaBtn=e.target.closest('[data-area]');
@@ -629,7 +1157,21 @@ document.addEventListener('click',function(e){
   if(viewBtn){showView(viewBtn.dataset.view);return}
   const fileItem=e.target.closest('[data-file]');
   if(fileItem){openFile(fileItem.dataset.file);return}
+  const hearingDone=e.target.closest('[data-hearing-done]');
+  if(hearingDone){markHearingDone(hearingDone.dataset.hearingDone);return}
+  const workType=e.target.closest('[data-work-type]');
+  if(workType){selectWorkType(workType.dataset.workType);return}
+  const workCheck=e.target.closest('[data-toggle-work]');
+  if(workCheck){
+    toggleWorkDone(workCheck.dataset.toggleWork,workCheck.checked);
+    return;
+  }
+  const unarchiveFileBtn=e.target.closest('[data-unarchive-file]');
+  if(unarchiveFileBtn){unarchiveFile(unarchiveFileBtn.dataset.unarchiveFile);return}
+  const fileArchiveAreaBtn=e.target.closest('[data-file-archive-area]');
+  if(fileArchiveAreaBtn){fileArchiveArea=fileArchiveAreaBtn.dataset.fileArchiveArea;renderFileArchive();return}
   const action=e.target.closest('[data-action]');
+
   if(action){
     const a=action.dataset.action;
     if(a==='newFile')openFileForm();
@@ -640,6 +1182,9 @@ document.addEventListener('click',function(e){
     else if(a==='addHearing')addHearing();
     else if(a==='addReminder')addReminder(false);
     else if(a==='saveNotification')saveNotification();
+    else if(a==='saveFileStatus')saveFileStatus();
+    else if(a==='archiveCurrentFile')archiveCurrentFile();
+    else if(a==='saveWork')saveWork();
     else if(a==='newDetention')newDetention();
     else if(a==='saveDetention')saveDetention();
     return;
@@ -673,10 +1218,12 @@ setInterval(function(){
   renderNotificationAlerts();
 },60000);
 
+document.getElementById('workArea').addEventListener('change',renderWorkForm);
 document.getElementById('fileSearch').addEventListener('input',renderFiles);
+
 document.getElementById('notifArea').addEventListener('change',function(){
   const a=this.value;
-  document.getElementById('notifFile').innerHTML=db.files.filter(f=>f.area===a).map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join('')||'<option value="">Dosya yok</option>';
+  fillFileSelect('notifFile',db.files.filter(f=>f.area===a&&!f.archived),'Dosya seçin','notifFileSearch');
   document.getElementById('notifFile').value='';
   document.getElementById('notifDuration').innerHTML='<option value="">Süre seçin</option>'+durationOptions(a);
   previewNotification();
@@ -691,3 +1238,4 @@ showView('home');
 </script>
 </body>
 </html>
+<script>document.addEventListener('DOMContentLoaded',function(){if(typeof renderCompletedWorkList==='function')renderCompletedWorkList();});</script>
