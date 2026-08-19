@@ -1,9 +1,11 @@
+
 <!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Avukat Paneli</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#20242a}
 header{padding:18px 20px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:5}
@@ -16,9 +18,22 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ccc;border-radiu
 button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}button.secondary{background:#eee;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}
 .hidden{display:none!important}.row{display:flex;gap:10px}.row>*{flex:1}.item{border:1px solid #e2e2e2;padding:13px;border-radius:10px;margin:8px 0;cursor:pointer}.muted{color:#70757d;font-size:13px}.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}
 @media(max-width:700px){.menu{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.area-nav{flex-direction:column}.row{flex-direction:column}}
+
+#authScreen{position:fixed;inset:0;background:#f5f6f8;display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999}.login-card{width:min(420px,100%);background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #00000012}.login-card h2{margin-top:0}.login-card button{width:100%;margin-top:10px}.login-error{color:#b42318;font-weight:700;margin-top:10px}.login-card small{color:#70757d}
 </style>
 </head>
 <body>
+<div id="authScreen">
+  <div class="login-card">
+    <h2>⚖️ Avukat Paneli</h2>
+    <p class="muted">Devam etmek için giriş yapın.</p>
+    <input id="loginEmail" type="email" placeholder="E-posta" autocomplete="email">
+    <input id="loginPassword" type="password" placeholder="Şifre" autocomplete="current-password" style="margin-top:10px">
+    <button class="primary" id="loginBtn">Giriş Yap</button>
+    <div id="loginError" class="login-error"></div>
+  </div>
+</div>
+
 <header><div class="wrap"><h1>⚖️ Avukat Paneli</h1></div></header>
 <div class="wrap">
   <div class="area-nav">
@@ -226,5 +241,43 @@ const sc=document.querySelector("button[onclick=\"show('sulhCeza')\"]"); if(sc)s
 }
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 setArea(area);
+</script>
+
+<script>
+// SUPABASE AYARLARI — Publishable key kullan. Secret key KESİNLİKLE kullanma.
+const SUPABASE_URL = "https://eylbiuworndkyfmltlic.supabase.co/";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_j_H9znWmyc6IuyUggOErUg_RtYMQ0ST";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const authScreen=document.getElementById('authScreen');
+const loginBtn=document.getElementById('loginBtn');
+const loginError=document.getElementById('loginError');
+
+async function checkAuth(){
+  if(SUPABASE_URL.includes('BURAYA_') || SUPABASE_PUBLISHABLE_KEY.includes('BURAYA_')){
+    loginError.textContent='Supabase bağlantı bilgileri index.html içine eklenmemiş.';
+    return;
+  }
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  if(session){authScreen.style.display='none';}else{authScreen.style.display='flex';}
+}
+
+loginBtn.addEventListener('click',async()=>{
+  loginError.textContent='';
+  loginBtn.disabled=true;
+  loginBtn.textContent='Giriş yapılıyor...';
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){loginError.textContent=error.message;loginBtn.disabled=false;loginBtn.textContent='Giriş Yap';return;}
+  authScreen.style.display='none';
+  loginBtn.disabled=false;loginBtn.textContent='Giriş Yap';
+});
+
+supabaseClient.auth.onAuthStateChange((_event,session)=>{
+  authScreen.style.display=session?'none':'flex';
+});
+
+checkAuth();
 </script>
 </body></html>
