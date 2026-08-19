@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="tr">
 <head>
@@ -5,37 +6,63 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Avukat Paneli</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#eef2f7;color:#172033}
-header{padding:18px 20px;background:#111827;color:#fff;border-bottom:1px solid #253047;position:sticky;top:0;z-index:5;box-shadow:0 3px 14px #0002}
-h1{margin:0;font-size:22px}.wrap{max-width:1100px;margin:auto;padding:18px}
-.area-nav{display:flex;gap:10px;margin:16px 0}.area-nav button{flex:1;border:1px solid #d7deea;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;background:#fff;color:#334155;box-shadow:0 2px 7px #0f172a12;transition:.15s}.area-nav button:hover{transform:translateY(-1px)}.area-nav button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8;box-shadow:0 4px 12px #1d4ed833}
-.menu{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}.menu button{border:1px solid #d8e0ec;background:#fff;color:#334155;padding:14px;border-radius:12px;cursor:pointer;font-weight:800;box-shadow:0 2px 8px #0f172a10}.menu button:hover{background:#f8fafc}.menu button.active{background:#e8f0ff;color:#1d4ed8;border-color:#93b4ff}
-.card{background:#fff;border:1px solid #dbe3ef;border-radius:15px;padding:18px;margin-bottom:14px;box-shadow:0 3px 14px #0f172a0b}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{padding:16px;border-radius:12px;background:#f1f5f9;border:1px solid #dbe3ef}.stat b{display:block;font-size:26px;margin-top:7px;color:#111827}
-input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:#3b82f6}textarea{min-height:100px}
-button.primary{background:#1d4ed8;color:#fff;border:0;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:700}button.primary:hover{background:#1e40af}button.secondary{background:#eef2f7;color:#334155;border:1px solid #d5deea;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:700}.hidden{display:none!important}.row{display:flex;gap:10px}.row>*{flex:1}.item{border:1px solid #dbe3ef;background:#fff;padding:13px;border-radius:11px;margin:8px 0;cursor:pointer}.item:hover{border-color:#a9bde0;background:#fbfdff}.muted{color:#64748b;font-size:13px}.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}.success{color:#067647;font-weight:800}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:800}.notice{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;margin:10px 0}.deadline{font-size:18px;font-weight:900;margin-top:6px}
-@media(max-width:700px){.menu{display:flex;flex-direction:column}.grid{grid-template-columns:1fr}.area-nav{flex-direction:column}.row{flex-direction:column}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eef2f7;color:#172033}
+header{background:#111827;color:#fff;padding:18px 20px;position:sticky;top:0;z-index:50}
+.wrap{max-width:1100px;margin:auto;padding:16px}
+h1{margin:0;font-size:22px}
+.area-nav,.menu{display:flex;gap:9px;margin:14px 0;flex-wrap:wrap}
+button{font:inherit;cursor:pointer}
+.area-nav button,.menu button,.primary,.secondary{border:1px solid #d7deea;border-radius:10px;padding:11px 14px;font-weight:700;background:#fff;color:#243047}
+.area-nav button{flex:1;min-width:120px}
+.area-nav button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.menu button{width:100%;text-align:left}
+.menu button.active{background:#e8f0ff;color:#1d4ed8;border-color:#93b4ff}
+.primary{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.secondary{background:#fff}
+.card{background:#fff;border:1px solid #dbe3ef;border-radius:15px;padding:18px;margin-bottom:14px;box-shadow:0 3px 14px #0f172a0b}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{padding:16px;border-radius:12px;background:#f1f5f9;border:1px solid #dbe3ef}
+.stat b{display:block;font-size:25px;margin-top:6px}
+.row{display:flex;gap:10px;align-items:end;margin:10px 0}
+.row>*{flex:1}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}
+textarea{min-height:95px;resize:vertical}
+label{display:block;font-weight:700;font-size:14px;flex:1}
+label input,label select{display:block;margin-top:6px;font-weight:400}
+.item{border:1px solid #dbe3ef;background:#fff;padding:13px;border-radius:11px;margin:8px 0}
+.clickable{cursor:pointer}
+.clickable:hover{background:#f8fafc;border-color:#a9bde0}
+.muted{color:#64748b;font-size:13px}
+.hidden{display:none!important}
+.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}.success{color:#067647;font-weight:800}
+.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:800}
+.deadline{font-size:17px;font-weight:900;margin-top:6px}
+.notice{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;margin:10px 0}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}.area-nav{flex-direction:column}}
 </style>
 </head>
 <body>
 <header><div class="wrap"><h1>⚖️ Avukat Paneli</h1></div></header>
-<div class="wrap">
-  <div class="area-nav">
-    <button id="area-ceza" onclick="setArea('ceza')">⚖️ Ceza</button>
-    <button id="area-hukuk" onclick="setArea('hukuk')">🏛️ Hukuk</button>
-    <button id="area-icra" onclick="setArea('icra')">💰 İcra</button>
+
+<main class="wrap">
+  <div class="area-nav" id="areaNav">
+    <button type="button" data-area="ceza">⚖️ Ceza</button>
+    <button type="button" data-area="hukuk">🏛️ Hukuk</button>
+    <button type="button" data-area="icra">💰 İcra</button>
   </div>
 
-  <div class="menu">
-    <button onclick="show('home')">🏠 Ana Sayfa</button>
-    <button onclick="show('files')">📁 Dosyalar</button>
-    <button onclick="show('calendar')">📅 Duruşmalar</button>
-    <button onclick="show('sulhCeza')">⚖️ Sulh Ceza</button>
-    <button onclick="show('reminders')">🔔 Hatırlatıcılar</button>
-    <button onclick="show('tebligatlar')">📨 Tebligatlar</button>
-    <button onclick="show('notifications')">📨 Tebligatlar</button>
+  <div class="menu" id="mainMenu">
+    <button type="button" data-view="home">🏠 Ana Sayfa</button>
+    <button type="button" data-view="files">📁 Dosyalar</button>
+    <button type="button" data-view="calendar">📅 Duruşmalar</button>
+    <button type="button" data-view="sulhCeza" id="sulhMenu">⚖️ Sulh Ceza</button>
+    <button type="button" data-view="reminders">🔔 Hatırlatıcılar</button>
+    <button type="button" data-view="notifications">📨 Genel Tebligat</button>
+    <button type="button" data-view="notificationArchive">🗄️ Tebligat Arşivi</button>
   </div>
 
-  <section id="home" class="card">
+  <section id="home" class="card" data-section>
     <h2 id="homeTitle">Ceza</h2>
     <div class="grid">
       <div class="stat">Aktif dosya<b id="statFiles">0</b></div>
@@ -45,234 +72,622 @@ button.primary{background:#1d4ed8;color:#fff;border:0;border-radius:9px;padding:
     <div class="card" style="margin-top:14px">
       <h3>⚡ Hızlı Gelişme Ekle</h3>
       <div class="row">
-        <select id="quickFile"></select>
-        <input id="quickDate" type="date">
+        <label>Dosya<select id="quickFile"></select></label>
+        <label>Tarih<input id="quickDate" type="date"></label>
       </div>
-      <textarea id="quickText" placeholder="Dosyada ne oldu?"></textarea>
-      <button class="primary" onclick="addDevelopment()">Gelişmeyi Dosyaya İşle</button>
+      <label>Açıklama<textarea id="quickText" placeholder="Dosyada ne oldu?"></textarea></label>
+      <button type="button" class="primary" data-action="quickDevelopment">Gelişmeyi Dosyaya İşle</button>
+    </div>
+    <div id="notificationAlerts" class="card" style="margin-top:14px">
+      <h3>🚨 Tebligat Uyarıları</h3>
+      <div id="notificationAlertList"></div>
     </div>
     <h3>Son Gelişmeler</h3><div id="recent"></div>
   </section>
 
-  <section id="files" class="card hidden">
-    <div class="row"><h2 style="flex:1">Dosyalar</h2><button class="primary" onclick="openFileForm()">+ Yeni Dosya</button></div>
-    <input id="fileSearch" placeholder="Dosya ara..." oninput="renderFiles()">
+  <section id="files" class="card hidden" data-section>
+    <div class="row"><h2 style="flex:1">Dosyalar</h2><button type="button" class="primary" data-action="newFile">+ Yeni Dosya</button></div>
+    <input id="fileSearch" placeholder="Dosya ara...">
     <div id="fileList"></div>
   </section>
 
-  <section id="fileForm" class="card hidden">
+  <section id="fileForm" class="card hidden" data-section>
     <h2>Yeni Dosya</h2>
-    <div class="row"><input id="fileNo" placeholder="Dosya no"><input id="fileTitle" placeholder="Kısa başlık"></div>
-    <div class="row" style="margin-top:10px"><input id="fileOpening" type="date"><select id="fileStatus"><option>Devam ediyor</option><option>Beklemede</option><option>Sonuçlandı</option></select></div>
-    <div style="margin-top:10px"><textarea id="fileNote" placeholder="Kısa not (isteğe bağlı)"></textarea></div>
-    <button class="primary" onclick="saveFile()">Kaydet</button> <button class="secondary" onclick="show('files')">Vazgeç</button>
+    <div class="row"><label>Dosya no<input id="fileNo"></label><label>Kısa başlık<input id="fileTitle"></label></div>
+    <div class="row"><label>Açılış tarihi<input id="fileOpening" type="date"></label><label>Durum<select id="fileStatus"><option>Devam ediyor</option><option>Beklemede</option><option>Sonuçlandı</option></select></label></div>
+    <label>Not<textarea id="fileNote"></textarea></label>
+    <button type="button" class="primary" data-action="saveFile">Kaydet</button>
+    <button type="button" class="secondary" data-view="files">Vazgeç</button>
   </section>
 
-  <section id="detail" class="card hidden">
-    <button class="secondary" onclick="show('files')">← Dosyalara dön</button>
+  <section id="detail" class="card hidden" data-section>
+    <button type="button" class="secondary" data-view="files">← Dosyalara dön</button>
     <h2 id="detailTitle"></h2><div id="detailMeta" class="muted"></div>
     <div class="card">
       <h3>📜 Dosya Kronolojisi</h3>
-      <div class="row"><input id="devDate" type="date"><button class="primary" onclick="addDevelopmentToCurrent()">+ Gelişme Ekle</button></div>
+      <div class="row"><label>Tarih<input id="devDate" type="date"></label><button type="button" class="primary" data-action="addDevelopment">+ Gelişme Ekle</button></div>
       <textarea id="devText" placeholder="Bu dosyada ne oldu?"></textarea>
     </div>
     <div id="timeline"></div>
-    <div class="card"><button class="primary" onclick="addReminderForCurrent()">🔔 Hatırlatıcı ekle</button></div>
+    <button type="button" class="primary" data-action="addCurrentReminder">🔔 Hatırlatıcı ekle</button>
   </section>
 
-  <section id="calendar" class="card hidden"><h2>Duruşmalar</h2><button class="primary" onclick="addHearing()">+ Duruşma</button><div id="hearingList"></div></section>
-  <section id="reminders" class="card hidden"><h2>Hatırlatıcılar</h2><button class="primary" onclick="addReminder()">+ Hatırlatıcı</button><div id="reminderList"></div></section>
+  <section id="calendar" class="card hidden" data-section>
+    <h2>Duruşmalar</h2>
+    <button type="button" class="primary" data-action="addHearing">+ Duruşma</button>
+    <div id="hearingList"></div>
+  </section>
 
-<section id="notifications" class="card hidden">
-  <div class="row"><h2 style="flex:1">📨 Genel Tebligat Süre Takibi</h2></div>
-  <p class="muted">Tek tebligat ekranı. Önce Ceza / Hukuk / İcra seçilir, sonra o birimde kayıtlı dosyalar listelenir. Ceza/Hukuk: 7 veya 14 gün · İcra: 3, 5 veya 7 gün.</p>
-  <div class="card" style="background:#f8fafc">
-    <h3>Yeni Tebligat</h3>
-    <div class="row">
-      <select id="notifArea" onchange="updateNotificationFiles();updateNotificationDuration()">
-        <option value="ceza">⚖️ Ceza</option><option value="hukuk">🏛️ Hukuk</option><option value="icra">💰 İcra</option>
-      </select>
-      <select id="notifFile"><option value="">Önce birim seçin</option></select>
+  <section id="reminders" class="card hidden" data-section>
+    <h2>Hatırlatıcılar</h2>
+    <button type="button" class="primary" data-action="addReminder">+ Hatırlatıcı</button>
+    <div id="reminderList"></div>
+  </section>
+
+  <section id="notifications" class="card hidden" data-section>
+    <h2>📨 Genel Tebligat Süre Takibi</h2>
+    <p class="muted">Önce birim, sonra yalnızca o birime ait dosya seçilir. Gün seçenekleri: Ceza/Hukuk 7 veya 14 gün · İcra 3, 5 veya 7 gün. Ayrıca tüm birimlerde 1 hafta ve 2 hafta seçenekleri vardır. E-tebligatta gelen günü izleyen 5. gün tebliğ edilmiş sayılır; gün verilen süre ertesi gün başlar, hafta verilen süre tebliğ edilmiş sayılan gün başlar.</p>
+    <div class="card">
+      <h3>Yeni Tebligat</h3>
+      <div class="row">
+        <label>Birim<select id="notifArea">
+          <option value="">Birim seçin</option><option value="ceza">Ceza</option><option value="hukuk">Hukuk</option><option value="icra">İcra</option>
+        </select></label>
+        <label>Dosya<select id="notifFile"><option value="">Önce birim seçin</option></select></label>
+      </div>
+      <div class="row">
+        <label>Tebligatın geldiği tarih<input id="notifDate" type="date"></label>
+        <label>Tebligat süresi<select id="notifDuration"><option value="">Önce birim seçin</option></select></label>
+      </div>
+      <label><input id="notifElectronic" type="checkbox" style="width:auto"> E-tebligat</label>
+      <div id="notifPreview" class="notice">Birim, tarih ve süre seçildiğinde hesap burada görünecek.</div>
+      <button type="button" class="primary" data-action="saveNotification">Tebligatı Kaydet</button>
     </div>
-    <div class="row" style="margin-top:10px">
-      <input id="notifDate" type="date" onchange="previewNotification()">
-      <select id="notifDuration" onchange="previewNotification()"></select>
+    <h3>Kayıtlı Tebligatlar</h3>
+    <div id="notificationList"></div>
+  </section>
+
+  <section id="notificationArchive" class="card hidden" data-section>
+    <h2>🗄️ Tebligat Arşivi</h2>
+    <p class="muted">Arşive aldığın tebligatlar aktif iş listesinden çıkarılır, ancak burada kalıcı olarak saklanır.</p>
+    <div class="area-nav" id="archiveAreaNav">
+      <button type="button" data-archive-area="all">📚 Tümü</button>
+      <button type="button" data-archive-area="icra">💰 İcra</button>
+      <button type="button" data-archive-area="hukuk">🏛️ Hukuk</button>
+      <button type="button" data-archive-area="ceza">⚖️ Ceza</button>
     </div>
-    <div style="margin-top:10px"><label><input id="notifElectronic" type="checkbox" onchange="previewNotification()" style="width:auto;margin-right:7px"> Elektronik tebligat (UETS)</label></div>
-    <div id="notifPreview" class="notice">Tebligat bilgilerini seçtiğinde süre burada görünecek.</div>
-    <button class="primary" onclick="saveNotification()">Tebligatı Kaydet</button>
-  </div>
-  <h3>Kayıtlı Tebligatlar</h3><div id="notificationList"></div>
-</section>
+    <div id="archiveList"></div>
+  </section>
 
-<section id="sulhCeza" class="card hidden">
-  <div class="row">
-    <h2 style="flex:1">⚖️ Sulh Ceza — Tutukluluk İtiraz Takibi</h2>
-    <button class="primary" onclick="openDetentionForm()">+ Yeni Takip</button>
-  </div>
-  <p class="muted">Tutukluluk inceleme/itiraz tarihlerini 30 günlük takip döngüsüyle gösterir.</p>
-  <input id="detentionSearch" placeholder="Dosya ara..." oninput="renderDetention()">
-  <div id="detentionList"></div>
-</section>
+  <section id="sulhCeza" class="card hidden" data-section>
+    <h2>⚖️ Sulh Ceza Tutukluluk Takibi</h2>
+    <button type="button" class="primary" data-action="newDetention">+ Yeni takip</button>
+    <div id="detentionList"></div>
+  </section>
 
-<section id="detentionForm" class="card hidden">
-  <h2>Yeni Tutukluluk Takibi</h2>
-  <div class="row">
-    <input id="detFileNo" placeholder="Dosya no">
-    <input id="detPerson" placeholder="Kısa başlık / kişi">
-  </div>
-  <div class="row" style="margin-top:10px">
-    <input id="detStart" type="date">
-    <input id="detNext" type="date">
-  </div>
-  <div style="margin-top:10px">
-    <textarea id="detNote" placeholder="Kısa not (isteğe bağlı)"></textarea>
-  </div>
-  <p class="muted">Sonraki inceleme tarihi boş bırakılırsa başlangıç tarihinden 30 gün sonrası hesaplanır.</p>
-  <button class="primary" onclick="saveDetention()">Kaydet</button>
-  <button class="secondary" onclick="show('sulhCeza')">Vazgeç</button>
-</section>
-</div>
+  <section id="detentionForm" class="card hidden" data-section>
+    <h2>Yeni Tutukluluk Takibi</h2>
+    <div class="row"><label>Dosya no<input id="detFileNo"></label><label>Kişi<input id="detPerson"></label></div>
+    <div class="row"><label>Başlangıç<input id="detStart" type="date"></label><label>Sonraki inceleme<input id="detNext" type="date"></label></div>
+    <label>Not<textarea id="detNote"></textarea></label>
+    <button type="button" class="primary" data-action="saveDetention">Kaydet</button>
+    <button type="button" class="secondary" data-view="sulhCeza">Vazgeç</button>
+  </section>
+</main>
 
 <script>
-const KEY='lawyer_panel_v1';
-let db=JSON.parse(localStorage.getItem(KEY)||'{"files":[],"hearings":[],"reminders":[],"developments":[],"detentions":[],"notifications":[]}');
-db.detentions=db.detentions||[];db.notifications=db.notifications||[];
-let area=localStorage.getItem('lawyer_area')||'ceza', currentFile=null;
-db.detentions=db.detentions||[];db.notifications=(db.notifications||[]);
-let area=localStorage.getItem('lawyer_area')||'ceza', currentFile=null;
+(function(){
+'use strict';
 
-const today=()=>new Date().toISOString().slice(0,10);
-function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
-function setArea(a){area=a;localStorage.setItem('lawyer_area',a);document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+a));show('home');renderAll()}
-function show(id){
-  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
-  const active=[...document.querySelectorAll('.menu button')].find(b=>
-    (b.getAttribute('onclick')||'').includes("show('"+id+"')")
-  );
-  if(active) active.classList.add('active');
-document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='detail')renderDetail();if(id==='files')renderFiles();if(id==='calendar')renderHearings();if(id==='reminders')renderReminders();if(id==='sulhCeza')renderDetention();if(id==='notifications'){document.getElementById('notifArea').value=area;updateNotificationFiles();updateNotificationDuration();renderNotifications()}}
+const KEY='avukat_panel_db_v1';
+let area=localStorage.getItem('lawyer_area')||'ceza';
+let currentFile=null;
+
+function today(){
+  const d=new Date();
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function formatDate(s){
+  if(!s)return '-';
+  const p=String(s).slice(0,10).split('-');
+  return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:String(s);
+}
+function esc(x){
+  return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function emptyDB(){
+  return {files:[],developments:[],hearings:[],reminders:[],notifications:[],detentions:[]};
+}
+function loadDB(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    const d=raw?JSON.parse(raw):emptyDB();
+    const e=emptyDB();
+    Object.keys(e).forEach(k=>{if(!Array.isArray(d[k]))d[k]=[]});
+    return d;
+  }catch(e){console.error(e);return emptyDB();}
+}
+let db=loadDB();
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));}
+
+function areaLabel(a=area){return a==='ceza'?'Ceza':a==='hukuk'?'Hukuk':'İcra'}
 function activeFiles(){return db.files.filter(f=>f.area===area)}
-function areaLabel(){return area==='ceza'?'Ceza':area==='hukuk'?'Hukuk':'İcra'}
-function openFileForm(){show('fileForm');document.getElementById('fileOpening').value=today()}
+
+function setArea(a){
+  if(!['ceza','hukuk','icra'].includes(a))return;
+  area=a;localStorage.setItem('lawyer_area',a);
+  document.querySelectorAll('[data-area]').forEach(b=>b.classList.toggle('active',b.dataset.area===a));
+  document.getElementById('sulhMenu').classList.toggle('hidden',a!=='ceza');
+  renderAll();
+  showView('home');
+}
+
+function showView(id){
+  const target=document.getElementById(id);
+  if(!target)return;
+  document.querySelectorAll('[data-section]').forEach(s=>s.classList.toggle('hidden',s.id!==id));
+  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+  if(id==='home')renderHome();
+  if(id==='files')renderFiles();
+  if(id==='detail')renderDetail();
+  if(id==='calendar')renderHearings();
+  if(id==='reminders')renderReminders();
+  if(id==='notifications')renderNotificationsForm();
+  if(id==='notificationArchive')renderArchive();
+  if(id==='sulhCeza')renderDetention();
+}
+
+function renderAll(){
+  renderHome();renderFiles();renderHearings();renderReminders();renderNotificationsForm();renderArchive();renderDetention();
+  document.querySelectorAll('[data-area]').forEach(b=>b.classList.toggle('active',b.dataset.area===area));
+  document.getElementById('sulhMenu').classList.toggle('hidden',area!=='ceza');
+}
+
+function openFileForm(){
+  ['fileNo','fileTitle','fileNote'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fileOpening').value=today();
+  showView('fileForm');
+}
 function saveFile(){
- const no=document.getElementById('fileNo').value.trim();if(!no)return alert('Dosya numarası gir.');
- db.files.push({id:Date.now(),area,no,title:document.getElementById('fileTitle').value.trim(),opening:document.getElementById('fileOpening').value||today(),status:document.getElementById('fileStatus').value,note:document.getElementById('fileNote').value.trim()});
- document.getElementById('fileNo').value='';document.getElementById('fileTitle').value='';document.getElementById('fileNote').value='';save();show('files')
+  const no=document.getElementById('fileNo').value.trim();
+  if(!no){alert('Dosya numarası gir.');return}
+  db.files.push({id:Date.now()+Math.random(),area,no,title:document.getElementById('fileTitle').value.trim(),opening:document.getElementById('fileOpening').value||today(),status:document.getElementById('fileStatus').value,note:document.getElementById('fileNote').value.trim()});
+  saveDB();renderAll();showView('files');
 }
 function renderFiles(){
- const q=(document.getElementById('fileSearch')?.value||'').toLowerCase();
- const arr=activeFiles().filter(f=>(f.no+' '+f.title).toLowerCase().includes(q));
- document.getElementById('fileList').innerHTML=arr.map(f=>`<div class="item" onclick="openFile(${f.id})"><b>${esc(f.no)}</b> ${esc(f.title||'')}<div class="muted">${esc(f.status)} · ${f.opening}</div></div>`).join('')||'<p class="muted">Dosya yok.</p>';
+  const q=(document.getElementById('fileSearch').value||'').toLowerCase();
+  const arr=activeFiles().filter(f=>(f.no+' '+(f.title||'')).toLowerCase().includes(q));
+  document.getElementById('fileList').innerHTML=arr.map(f=>`<div class="item clickable" data-file="${f.id}"><b>${esc(f.no)}</b> ${esc(f.title||'')}<div class="muted">${esc(f.status)} · ${formatDate(f.opening)}</div></div>`).join('')||'<p class="muted">Bu birimde dosya yok.</p>';
 }
-function openFile(id){currentFile=id;show('detail')}
+function openFile(id){currentFile=id;showView('detail')}
 function renderDetail(){
- const f=db.files.find(x=>x.id===currentFile);if(!f)return;
- document.getElementById('detailTitle').textContent=f.no+(f.title?' — '+f.title:'');
- document.getElementById('detailMeta').textContent=areaLabel()+' · '+f.status+' · Açılış '+f.opening;
- const arr=db.developments.filter(d=>d.fileId===f.id).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
- document.getElementById('timeline').innerHTML=arr.map(d=>`<div class="item"><b>${d.date}</b><div>${esc(d.text)}</div></div>`).join('')||'<p class="muted">Henüz gelişme yok.</p>';
- document.getElementById('devDate').value=today()
+  const f=db.files.find(x=>String(x.id)===String(currentFile));
+  if(!f)return;
+  document.getElementById('detailTitle').textContent=f.no+(f.title?' — '+f.title:'');
+  document.getElementById('detailMeta').textContent=areaLabel(f.area)+' · '+f.status+' · Açılış '+formatDate(f.opening);
+  const arr=db.developments.filter(d=>String(d.fileId)===String(f.id)).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+  document.getElementById('timeline').innerHTML=arr.map(d=>`<div class="item"><b>${formatDate(d.date)}</b><div>${esc(d.text)}</div></div>`).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+  document.getElementById('devDate').value=today();
 }
-function addDevelopmentToCurrent(){const date=document.getElementById('devDate').value||today(),text=document.getElementById('devText').value.trim();if(!text)return alert('Gelişme yaz.');db.developments.push({id:Date.now(),fileId:currentFile,date,text});document.getElementById('devText').value='';save();renderDetail()}
-function addDevelopment(){const fid=Number(document.getElementById('quickFile').value),date=document.getElementById('quickDate').value||today(),text=document.getElementById('quickText').value.trim();if(!fid||!text)return alert('Dosya ve gelişme gir.');db.developments.push({id:Date.now(),fileId:fid,date,text});document.getElementById('quickText').value='';save();show('home')}
-function renderQuick(){const q=document.getElementById('quickFile');if(!q)return;q.innerHTML=activeFiles().map(f=>`<option value="${f.id}">${esc(f.no)} ${esc(f.title||'')}</option>`).join('');document.getElementById('quickDate').value=today()}
-function addHearing(){const fid=prompt('Dosya numarası?');if(!fid)return;const date=prompt('Duruşma tarihi (YYYY-AA-GG)?',today());if(!date)return;db.hearings.push({id:Date.now(),area,file:fid,date});save()}
-function renderHearings(){const a=db.hearings.filter(h=>h.area===area).sort((x,y)=>x.date.localeCompare(y.date));document.getElementById('hearingList').innerHTML=a.map(h=>`<div class="item"><b>${h.date}</b> — ${esc(h.file)}</div>`).join('')||'<p class="muted">Duruşma yok.</p>'}
-function addReminderForCurrent(){const date=prompt('Hatırlatıcı tarihi (YYYY-AA-GG)?',today());if(!date)return;const text=prompt('Hatırlatıcı?');if(!text)return;db.reminders.push({id:Date.now(),area,fileId:currentFile,date,text});save()}
-function addReminder(){const date=prompt('Tarih (YYYY-AA-GG)?',today());if(!date)return;const text=prompt('Hatırlatıcı?');if(!text)return;db.reminders.push({id:Date.now(),area,fileId:null,date,text});save()}
-function renderReminders(){const a=db.reminders.filter(r=>r.area===area).sort((x,y)=>x.date.localeCompare(y.date));document.getElementById('reminderList').innerHTML=a.map(r=>`<div class="item"><b>${r.date}</b> — ${esc(r.text)}</div>`).join('')||'<p class="muted">Hatırlatıcı yok.</p>'}
-function renderHome(){
- document.getElementById('homeTitle').textContent=areaLabel();
- const fs=activeFiles(),hs=db.hearings.filter(h=>h.area===area),rs=db.reminders.filter(r=>r.area===area);
- document.getElementById('statFiles').textContent=fs.length;
- document.getElementById('statHearings').textContent=hs.filter(h=>h.date>=today()).length;
- document.getElementById('statReminders').textContent=rs.filter(r=>r.date>=today()).length;
- const recent=db.developments.filter(d=>{const f=db.files.find(x=>x.id===d.fileId);return f&&f.area===area}).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,8);
- document.getElementById('recent').innerHTML=recent.map(d=>{const f=db.files.find(x=>x.id===d.fileId);return `<div class="item" onclick="openFile(${f.id});show('detail')"><b>${d.date} · ${esc(f.no)}</b><div>${esc(d.text)}</div></div>`}).join('')||'<p class="muted">Henüz gelişme yok.</p>';
- renderQuick()
+function addDevelopment(){
+  if(!currentFile)return;
+  const text=document.getElementById('devText').value.trim();
+  if(!text){alert('Gelişme yaz.');return}
+  db.developments.push({id:Date.now()+Math.random(),fileId:currentFile,date:document.getElementById('devDate').value||today(),text});
+  document.getElementById('devText').value='';saveDB();renderDetail();
+}
+function addQuickDevelopment(){
+  const fid=document.getElementById('quickFile').value;
+  const text=document.getElementById('quickText').value.trim();
+  if(!fid||!text){alert('Dosya ve gelişme gir.');return}
+  db.developments.push({id:Date.now()+Math.random(),fileId:fid,date:document.getElementById('quickDate').value||today(),text});
+  document.getElementById('quickText').value='';saveDB();renderHome();
+}
+function renderQuick(){
+  const q=document.getElementById('quickFile');
+  const arr=activeFiles();
+  q.innerHTML=arr.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join('')||'<option value="">Dosya yok</option>';
+  document.getElementById('quickDate').value=today();
+}
+function renderNotificationAlerts(){
+  const el=document.getElementById('notificationAlertList');
+  if(!el)return;
+
+  const todayDate=new Date(today()+'T00:00:00');
+
+  const alerts=db.notifications
+    .filter(n=>n.area===area&&!n.archived)
+    .map(n=>{
+      const deadline=String(n.deadline||'').slice(0,10);
+      const finalization=String(n.finalization||addDaysLocal(deadline,1)).slice(0,10);
+      const dDeadline=Math.ceil((new Date(deadline+'T00:00:00')-todayDate)/86400000);
+      const dFinal=Math.ceil((new Date(finalization+'T00:00:00')-todayDate)/86400000);
+      return {...n,dDeadline,dFinal};
+    })
+    .filter(n=>n.dDeadline<0 || n.dFinal>=0 && n.dFinal<=3)
+    .sort((a,b)=>{
+      const pa=a.dDeadline<0?0:1;
+      const pb=b.dDeadline<0?0:1;
+      return pa-pb || a.dFinal-b.dFinal || a.dDeadline-b.dDeadline;
+    });
+
+  if(!alerts.length){
+    el.innerHTML='<div class="muted">Şu anda süresi geçmiş veya kesinleşmesine 3 gün/az kalan tebligat yok.</div>';
+    return;
+  }
+
+  el.innerHTML=alerts.map(n=>{
+    const f=db.files.find(x=>String(x.id)===String(n.fileId));
+    const fileNo=f?.no||n.file||'Dosya';
+    const label=n.dDeadline<0
+      ? `<span class="danger">⚠️ SÜRESİ GEÇMİŞ — ${Math.abs(n.dDeadline)} gün geçti</span>`
+      : n.dFinal===0
+        ? `<span class="danger">🔴 BUGÜN KESİNLEŞİYOR</span>`
+        : `<span class="warn">⏰ Kesinleşmesine ${n.dFinal} gün kaldı</span>`;
+    return `<div class="item clickable" data-file="${n.fileId}">
+      <b>${esc(fileNo)}</b> <span class="pill">${esc(areaLabel(n.area))}</span>
+      <div>${label}</div>
+      <div class="muted">Son gün: ${formatDate(n.deadline)} · Kesinleşme: ${formatDate(n.finalization||addDaysLocal(n.deadline,1))}</div>
+    </div>`;
+  }).join('');
 }
 
-function isWeekendDate(s){const d=new Date(String(s).slice(0,10)+"T00:00:00");return d.getDay()===0||d.getDay()===6}
+function renderHome(){
+  document.getElementById('homeTitle').textContent=areaLabel();
+  const fs=activeFiles(),hs=db.hearings.filter(h=>h.area===area),rs=db.reminders.filter(r=>r.area===area);
+  document.getElementById('statFiles').textContent=fs.length;
+  document.getElementById('statHearings').textContent=hs.filter(h=>h.date>=today()).length;
+  document.getElementById('statReminders').textContent=rs.filter(r=>r.date>=today()).length;
+  const recent=db.developments.filter(d=>{const f=db.files.find(x=>String(x.id)===String(d.fileId));return f&&f.area===area}).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,8);
+  document.getElementById('recent').innerHTML=recent.map(d=>{const f=db.files.find(x=>String(x.id)===String(d.fileId));return `<div class="item clickable" data-file="${f.id}"><b>${formatDate(d.date)} · ${esc(f.no)}</b><div>${esc(d.text)}</div></div>`}).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+  renderNotificationAlerts();
+  renderQuick();
+}
+
+function addHearing(){
+  const file=prompt('Dosya numarası?');if(!file)return;
+  const date=prompt('Duruşma tarihi (YYYY-AA-GG)?',today());if(!date)return;
+  db.hearings.push({id:Date.now()+Math.random(),area,file,date});saveDB();renderHearings();renderHome();
+}
+function renderHearings(){
+  const arr=db.hearings.filter(h=>h.area===area).sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('hearingList').innerHTML=arr.map(h=>`<div class="item"><b>${formatDate(h.date)}</b> — ${esc(h.file)}</div>`).join('')||'<p class="muted">Duruşma yok.</p>';
+}
+function addReminder(current=false){
+  const date=prompt('Hatırlatıcı tarihi (YYYY-AA-GG)?',today());if(!date)return;
+  const text=prompt('Hatırlatıcı?');if(!text)return;
+  db.reminders.push({id:Date.now()+Math.random(),area,fileId:current?currentFile:null,date,text});saveDB();renderReminders();renderHome();
+}
+function renderReminders(){
+  const arr=db.reminders.filter(r=>r.area===area).sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('reminderList').innerHTML=arr.map(r=>`<div class="item"><b>${formatDate(r.date)}</b> — ${esc(r.text)}</div>`).join('')||'<p class="muted">Hatırlatıcı yok.</p>';
+}
+
+/* Tebligat hesaplama */
+function isWeekendDate(s){const d=new Date(String(s).slice(0,10)+'T00:00:00');return d.getDay()===0||d.getDay()===6}
 function holidaySet(year){
- const fixed=[`${year}-01-01`,`${year}-04-23`,`${year}-05-01`,`${year}-05-19`,`${year}-07-15`,`${year}-08-30`,`${year}-10-29`];
- if(year===2026)return new Set([...fixed,'2026-03-19','2026-03-20','2026-03-21','2026-03-22','2026-05-26','2026-05-27','2026-05-28','2026-05-29','2026-05-30','2026-10-28']);
- return new Set(fixed);
+  const fixed=[`${year}-01-01`,`${year}-04-23`,`${year}-05-01`,`${year}-05-19`,`${year}-07-15`,`${year}-08-30`,`${year}-10-29`];
+  if(year===2026)return new Set([...fixed,'2026-03-19','2026-03-20','2026-03-21','2026-03-22','2026-05-26','2026-05-27','2026-05-28','2026-05-29','2026-05-30','2026-10-28']);
+  return new Set(fixed);
 }
 function isOfficialHoliday(s){return holidaySet(Number(String(s).slice(0,4))).has(String(s).slice(0,10))}
-function isAdliTatili(s,a){if(a!=='ceza'&&a!=='hukuk')return false;const md=Number(String(s).slice(5,7))*100+Number(String(s).slice(8,10));return md>=720&&md<=831}
-function addDaysLocal(dateStr,n){const d=new Date(String(dateStr).slice(0,10)+"T00:00:00");d.setDate(d.getDate()+Number(n));return d.toISOString().slice(0,10)}
-function addPeriodWithRules(startStr,duration,a){
- let d=new Date(String(startStr).slice(0,10)+"T00:00:00"), remaining=Number(duration);
- while(remaining>1){d.setDate(d.getDate()+1);const x=d.toISOString().slice(0,10);if(isAdliTatili(x,a))continue;remaining--}
- let out=d.toISOString().slice(0,10);
- while(isWeekendDate(out)||isOfficialHoliday(out)||isAdliTatili(out,a)){d.setDate(d.getDate()+1);out=d.toISOString().slice(0,10)}
- return out;
+function isAdliTatili(s,a){
+  if(a!=='ceza'&&a!=='hukuk')return false;
+  const md=Number(String(s).slice(5,7))*100+Number(String(s).slice(8,10));
+  return md>=720&&md<=831;
 }
-function notificationDurationOptions(a){return a==='icra'?'<option value="3">3 gün</option><option value="5">5 gün</option><option value="7">7 gün</option>':'<option value="7">1 hafta (7 gün)</option><option value="14">2 hafta (14 gün)</option>'}
-function updateNotificationFiles(){const a=document.getElementById('notifArea').value,q=document.getElementById('notifFile'),files=db.files.filter(f=>f.area===a);q.innerHTML=files.length?files.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join(''):'<option value="">Bu birimde kayıtlı dosya yok</option>';previewNotification()}
-function updateNotificationDuration(){const a=document.getElementById('notifArea').value;document.getElementById('notifDuration').innerHTML=notificationDurationOptions(a);previewNotification()}
-function calculateNotification(date,a,duration,electronic){const start=electronic?addDaysLocal(date,5):date;return {start,deadline:addPeriodWithRules(start,duration,a)}}
-function previewNotification(){const el=document.getElementById('notifPreview');if(!el)return;const date=document.getElementById('notifDate')?.value,a=document.getElementById('notifArea')?.value,dur=Number(document.getElementById('notifDuration')?.value||0),e=document.getElementById('notifElectronic')?.checked;if(!date||!dur){el.textContent='Tebligat bilgilerini seçtiğinde süre burada görünecek.';return}const c=calculateNotification(date,a,dur,e);el.innerHTML=`<b>${e?'E-tebligat':'Normal tebligat'}</b> · Süre başlangıcı: <b>${formatDate(c.start)}</b> · Son gün: <b>${formatDate(c.deadline)}</b>`}
-function saveNotification(){const a=document.getElementById('notifArea').value,fid=Number(document.getElementById('notifFile').value),date=document.getElementById('notifDate').value,duration=Number(document.getElementById('notifDuration').value),electronic=document.getElementById('notifElectronic').checked;if(!fid)return alert('Önce kayıtlı bir dosya seç.');if(!date)return alert('Tebligat tarihini seç.');const f=db.files.find(x=>x.id===fid);if(!f)return alert('Dosya bulunamadı.');const c=calculateNotification(date,a,duration,electronic);db.notifications.push({id:Date.now(),area:a,fileId:fid,file:f.no,date,electronic,duration,start:c.start,deadline:c.deadline});save();show('notifications')}
-function renderNotifications(){const el=document.getElementById('notificationList');if(!el)return;const a=db.notifications.filter(x=>x.area===area).sort((x,y)=>x.deadline.localeCompare(y.deadline));el.innerHTML=a.map(n=>{const d=daysUntil(n.deadline),cls=d<0?'danger':d<=3?'warn':'success',label=d<0?`${Math.abs(d)} gün geçti`:d===0?'BUGÜN':`${d} gün kaldı`,f=db.files.find(x=>x.id===n.fileId);return `<div class="item"><div><b>${esc(f?.no||n.file)}</b> <span class="pill">${areaLabel()}</span> <span class="pill">${n.electronic?'E-tebligat':'Normal'}</span></div><div class="muted">Tebliğ: ${formatDate(n.date)} · Süre başlangıcı: ${formatDate(n.start)} · Süre: ${n.duration} gün</div><div class="deadline">Son gün: ${formatDate(n.deadline)}</div><div class="${cls}">${label}</div></div>`}).join('')||'<p class="muted">Bu birimde kayıtlı tebligat yok.</p>'}
-function daysUntil(dateStr){
-  const a=new Date(today()+"T00:00:00"), b=new Date(String(dateStr).slice(0,10)+"T00:00:00");
-  return Math.ceil((b-a)/86400000);
+function addDaysLocal(s,n){
+  const d=new Date(String(s).slice(0,10)+'T00:00:00');d.setDate(d.getDate()+Number(n));
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
 }
-function openDetentionForm(){
-  if(area!=="ceza"){alert("Sulh Ceza yalnızca Ceza alanında kullanılabilir.");return}
-  show('detentionForm');
-  document.getElementById('detStart').value=today();
-  document.getElementById('detNext').value=addDaysLocal(today(),30);
+function isBusinessDay(s,a){return !isWeekendDate(s)&&!isOfficialHoliday(s)}
+function nextBusinessDay(s,a){let d=s;while(!isBusinessDay(d,a))d=addDaysLocal(d,1);return d}
+function durationOptions(a){
+  let days;
+  if(a==='icra'){
+    days='<option value="3d">3 gün</option><option value="5d">5 gün</option><option value="7d">7 gün</option>';
+  }else{
+    days='<option value="7d">7 gün</option><option value="14d">14 gün</option>';
+  }
+  return days+'<option value="1w">1 hafta</option><option value="2w">2 hafta</option>';
+}
+function parseDuration(value){
+  const v=String(value||'');
+  if(v.endsWith('w')) return {unit:'week',amount:Number(v.slice(0,-1))};
+  if(v.endsWith('d')) return {unit:'day',amount:Number(v.slice(0,-1))};
+  // Eski kayıtlarla uyumluluk: 3/5/7/14 sayıları gün kabul edilir.
+  return {unit:'day',amount:Number(v)};
+}
+function parseDuration(value){
+  const v=String(value||'');
+  if(v.endsWith('w')) return {unit:'week',amount:Number(v.slice(0,-1))};
+  if(v.endsWith('d')) return {unit:'day',amount:Number(v.slice(0,-1))};
+  const n=Number(v);
+  return {unit:'day',amount:n};
+}
+function calculateNotification(date,a,duration,electronic){
+  /*
+    KONTROL EDİLMİŞ HESAPLAMA MANTIĞI
+
+    1) E-tebligat:
+       UETS'ye ulaştığı günü izleyen 5. günün sonunda tebliğ edilmiş sayılır.
+       Bu 5 günlük kabul süresi takvim günüdür; hafta sonu/resmi tatil
+       nedeniyle uzatılmaz.
+
+    2) Tebliğ edilmiş sayılan gün hesaba katılmaz.
+       Süre, onu izleyen gün başlar.
+
+    3) Gün olarak süre:
+       Başlangıç günü 1. gündür. N günün sonu = başlangıç + (N-1) gün.
+
+    4) Hafta olarak süre:
+       Süre yine tebliğ edilmiş sayılan günü izleyen gün başlar.
+       1 hafta, başlangıç gününün takip eden haftadaki aynı isimli gününde;
+       2 hafta, iki hafta sonraki aynı isimli gününde sona erer.
+       Bu nedenle 1 hafta = başlangıç + 7 gün, 2 hafta = başlangıç + 14 gün.
+
+    5) Son gün hafta sonuna veya resmi tatile denk gelirse ilk iş gününe uzar.
+       Adli tatil tek başına genel bir "tatil günü" olarak son günü otomatik
+       uzatmaz; somut süre bakımından özel hüküm varsa ayrıca değerlendirilmelidir.
+
+    6) Bu uygulamanın kullanıcı tarafından belirlenen iş akışı gereği,
+       düzeltilmiş son günün ertesi günü "kesinleşme" olarak gösterilir.
+  */
+  const deemedServed=electronic?addDaysLocal(date,5):date;
+  const d=parseDuration(duration);
+
+  // Süre her durumda tebliğ edilmiş sayılan günü izleyen gün başlar.
+  const first=addDaysLocal(deemedServed,1);
+
+  let deadline;
+  if(d.unit==='week'){
+    deadline=addDaysLocal(first,d.amount*7);
+  }else{
+    deadline=addDaysLocal(first,d.amount-1);
+  }
+
+  deadline=nextBusinessDay(deadline,a);
+
+  return {
+    served:deemedServed,
+    start:first,
+    deadline,
+    finalization:addDaysLocal(deadline,1),
+    unit:d.unit,
+    amount:d.amount
+  };
+}
+function renderNotificationsForm(){
+  const a=document.getElementById('notifArea');
+  a.value=area;
+  const files=activeFiles();
+  document.getElementById('notifFile').innerHTML=files.length?'<option value="">Dosya seçin</option>'+files.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join(''):'<option value="">Bu birimde dosya yok</option>';
+  document.getElementById('notifDuration').innerHTML='<option value="">Süre seçin</option>'+durationOptions(area);
+  if(!document.getElementById('notifDate').value)document.getElementById('notifDate').value=today();
+  previewNotification();
+  renderNotifications();
+}
+function previewNotification(){
+  const a=document.getElementById('notifArea').value;
+  const date=document.getElementById('notifDate').value;
+  const dur=String(document.getElementById('notifDuration').value||'');
+  const e=document.getElementById('notifElectronic').checked;
+  const el=document.getElementById('notifPreview');
+  if(!a||!date||!dur){el.textContent='Birim, tarih ve süre seçildiğinde hesap burada görünecek.';return}
+  const c=calculateNotification(date,a,dur,e);
+  const sureLabel=c.unit==='week'?`${c.amount} hafta`:`${c.amount} gün`;
+  el.innerHTML=`<b>${e?'E-tebligat':'Normal tebligat'}</b> · Tebliğ edilmiş sayılan tarih: <b>${formatDate(c.served)}</b> · Süre: <b>${sureLabel}</b> · Süre başlangıcı: <b>${formatDate(c.start)}</b> · Son gün: <b>${formatDate(c.deadline)}</b> · Kesinleşme: <b>${formatDate(c.finalization)}</b>`;
+}
+function saveNotification(){
+  const a=document.getElementById('notifArea').value;
+  const fid=document.getElementById('notifFile').value;
+  const date=document.getElementById('notifDate').value;
+  const dur=String(document.getElementById('notifDuration').value||'');
+  const e=document.getElementById('notifElectronic').checked;
+
+  if(!a){alert('Birim seç.');return}
+  if(!fid){alert('Dosya seç.');return}
+  if(!date){alert('Tebligatın geldiği tarihi seç.');return}
+  if(!dur){alert('Tebligat süresini seç.');return}
+
+  const f=db.files.find(x=>String(x.id)===String(fid));
+  if(!f){alert('Dosya bulunamadı.');return}
+
+  const parsed=parseDuration(dur);
+  if(!parsed.amount || !['day','week'].includes(parsed.unit)){
+    alert('Geçerli bir tebligat süresi seç.');
+    return;
+  }
+
+  const c=calculateNotification(date,a,dur,e);
+  db.notifications.push({
+    id:Date.now()+Math.random(),
+    area:a,
+    fileId:f.id,
+    file:f.no,
+    date,
+    electronic:e,
+    duration:dur,
+    start:c.start,
+    deadline:c.deadline,
+    finalization:c.finalization,
+    served:c.served,
+    unit:c.unit,
+    amount:c.amount
+  });
+  saveDB();
+  document.getElementById('notifElectronic').checked=false;
+  document.getElementById('notifFile').value='';
+  renderNotificationsForm();
+}
+function renderNotifications(){
+  const el=document.getElementById('notificationList');
+  const arr=db.notifications.filter(n=>!n.archived).sort((a,b)=>a.deadline.localeCompare(b.deadline));
+  el.innerHTML=arr.map(n=>{
+    const d=Math.ceil((new Date(n.deadline+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000);
+    const cls=d<0?'danger':d<=3?'warn':'success';
+    const label=d<0?`${Math.abs(d)} gün geçti`:d===0?'BUGÜN':`${d} gün kaldı`;
+    const f=db.files.find(x=>String(x.id)===String(n.fileId));
+    const lab=areaLabel(n.area);
+    return `<div class="item"><b>${esc(f?.no||n.file||'Dosya')}</b> <span class="pill">${lab}</span> <span class="pill">${n.electronic?'E-tebligat':'Normal'}</span>
+      <div class="muted">Tebligatın geldiği tarih: ${formatDate(n.date)} · Tebliğ edilmiş sayılan tarih: ${formatDate(n.served||n.start)} · Süre başlangıcı: ${formatDate(n.start)} · Süre: ${n.unit==='week'?n.amount+' hafta':n.amount+' gün'}</div>
+      <div class="deadline">Son gün: ${formatDate(n.deadline)}</div><div class="${cls}">${label}</div>
+      <div class="muted">Kesinleşme: ${formatDate(n.finalization||addDaysLocal(n.deadline,1))}</div>
+      <button type="button" class="secondary" data-archive-notification="${n.id}">🗄️ Arşive Kaldır</button>
+    </div>`;
+  }).join('')||'<p class="muted">Kayıtlı tebligat yok.</p>';
+}
+
+let archiveArea='all';
+
+function archiveNotification(id){
+  const n=db.notifications.find(x=>String(x.id)===String(id));
+  if(!n)return;
+  if(!confirm('Bu tebligatı iş listesinden çıkarıp arşive kaldırmak istiyor musun?'))return;
+  n.archived=true;
+  n.archivedAt=today();
+  saveDB();
+  renderNotifications();
+  renderNotificationAlerts();
+  renderArchive();
+}
+
+function renderArchive(){
+  const el=document.getElementById('archiveList');
+  if(!el)return;
+
+  document.querySelectorAll('[data-archive-area]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.archiveArea===archiveArea);
+  });
+
+  let arr=db.notifications.filter(n=>n.archived);
+  if(archiveArea!=='all')arr=arr.filter(n=>n.area===archiveArea);
+
+  arr.sort((a,b)=>
+    String(b.archivedAt||'').localeCompare(String(a.archivedAt||'')) ||
+    String(b.deadline||'').localeCompare(String(a.deadline||''))
+  );
+
+  el.innerHTML=arr.map(n=>{
+    const f=db.files.find(x=>String(x.id)===String(n.fileId));
+    const fileNo=f?.no||n.file||'Dosya';
+    const duration=n.unit==='week' ? `${n.amount} hafta` : `${n.amount} gün`;
+    return `<div class="item">
+      <b>${esc(fileNo)}</b> <span class="pill">${esc(areaLabel(n.area))}</span>
+      <div class="muted">Tebligatın geldiği tarih: ${formatDate(n.date)} · Tebliğ edilmiş sayılan tarih: ${formatDate(n.served||n.start)}</div>
+      <div class="muted">Süre: ${duration} · Süre başlangıcı: ${formatDate(n.start)}</div>
+      <div class="deadline">Son gün: ${formatDate(n.deadline)}</div>
+      <div class="muted">Kesinleşme: ${formatDate(n.finalization||addDaysLocal(n.deadline,1))} · Arşiv tarihi: ${formatDate(n.archivedAt)}</div>
+      <button type="button" class="secondary" data-unarchive-notification="${n.id}">↩️ İş Listesine Geri Al</button>
+    </div>`;
+  }).join('')||'<p class="muted">Bu grupta arşivlenmiş tebligat yok.</p>';
+}
+
+function unarchiveNotification(id){
+  const n=db.notifications.find(x=>String(x.id)===String(id));
+  if(!n)return;
+  n.archived=false;
+  delete n.archivedAt;
+  saveDB();
+  renderArchive();
+  renderNotifications();
+  renderNotificationAlerts();
+}
+
+/* Sulh Ceza */
+function newDetention(){
+  if(area!=='ceza'){alert('Sulh Ceza yalnızca Ceza biriminde kullanılabilir.');return}
+  document.getElementById('detFileNo').value='';document.getElementById('detPerson').value='';document.getElementById('detNote').value='';
+  document.getElementById('detStart').value=today();document.getElementById('detNext').value=addDaysLocal(today(),30);
+  showView('detentionForm');
 }
 function saveDetention(){
-  const fileNo=document.getElementById('detFileNo').value.trim();
-  const person=document.getElementById('detPerson').value.trim();
-  const start=document.getElementById('detStart').value||today();
-  const next=document.getElementById('detNext').value||addDaysLocal(start,30);
-  if(!fileNo)return alert("Dosya no gir.");
-  db.detentions.push({
-    id:Date.now(), area:"ceza", fileNo, person, start, next,
-    note:document.getElementById('detNote').value.trim()
-  });
-  document.getElementById('detFileNo').value='';
-  document.getElementById('detPerson').value='';
-  document.getElementById('detNote').value='';
-  save(); show('sulhCeza');
+  const fileNo=document.getElementById('detFileNo').value.trim();if(!fileNo){alert('Dosya no gir.');return}
+  db.detentions.push({id:Date.now()+Math.random(),area:'ceza',fileNo,person:document.getElementById('detPerson').value.trim(),start:document.getElementById('detStart').value||today(),next:document.getElementById('detNext').value||addDaysLocal(today(),30),note:document.getElementById('detNote').value.trim()});
+  saveDB();renderDetention();showView('sulhCeza');
 }
 function renderDetention(){
-  const q=(document.getElementById('detentionSearch')?.value||'').toLowerCase();
-  const arr=db.detentions.filter(x=>x.area==="ceza" && (x.fileNo+' '+x.person+' '+x.note).toLowerCase().includes(q))
-    .sort((a,b)=>a.next.localeCompare(b.next));
-  const el=document.getElementById('detentionList'); if(!el)return;
+  const el=document.getElementById('detentionList');
+  const arr=db.detentions.filter(x=>x.area==='ceza').sort((a,b)=>a.next.localeCompare(b.next));
   el.innerHTML=arr.map(x=>{
-    const d=daysUntil(x.next);
-    let cls=d<0?'danger':d<=3?'warn':'';
-    let label=d<0?`${Math.abs(d)} gün geçti`:d===0?'BUGÜN':d<=3?`⚠️ ${d} gün kaldı`:`${d} gün kaldı`;
-    return `<div class="item">
-      <div><b>${esc(x.fileNo)}</b> ${esc(x.person||'')}</div>
-      <div class="muted">Son takip: ${x.start} · Sonraki inceleme/itiraz: <b>${x.next}</b></div>
-      <div class="${cls}">${label}</div>
-      ${x.note?`<div class="muted">${esc(x.note)}</div>`:''}
-      <div style="margin-top:8px">
-        <button class="secondary" onclick="advanceDetention(${x.id})">30 Günlük Yeni Tarih Oluştur</button>
-      </div>
-    </div>`;
+    const d=Math.ceil((new Date(x.next+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000);
+    return `<div class="item"><b>${esc(x.fileNo)}</b> ${esc(x.person||'')}<div class="muted">Sonraki inceleme: ${formatDate(x.next)}</div><div class="${d<0?'danger':d<=3?'warn':''}">${d<0?Math.abs(d)+' gün geçti':d===0?'BUGÜN':d+' gün kaldı'}</div><button type="button" class="secondary" data-advance="${x.id}">30 Günlük Yeni Tarih Oluştur</button></div>`;
   }).join('')||'<p class="muted">Tutukluluk takibi yok.</p>';
 }
 function advanceDetention(id){
-  const x=db.detentions.find(z=>z.id===id); if(!x)return;
-  const base=x.next;
-  x.start=base;
-  x.next=addDaysLocal(base,30);
-  save(); renderDetention();
+  const x=db.detentions.find(z=>String(z.id)===String(id));if(!x)return;
+  x.start=x.next;x.next=addDaysLocal(x.next,30);saveDB();renderDetention();
 }
 
-function renderAll(){renderHome();renderFiles();renderHearings();renderReminders();renderNotifications();document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+area));if(document.getElementById('notifArea')){document.getElementById('notifArea').value=area;updateNotificationFiles();updateNotificationDuration();document.getElementById('notifDate').value=today();}}
-const sc=document.querySelector("button[onclick=\"show('sulhCeza')\"]"); if(sc)sc.style.display=area==="ceza"?"":"none";
-}
-function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-setArea(area);
+/* Tek ve kalıcı event delegation: hiçbir render işlemi menü butonlarının eventini silmez. */
+document.addEventListener('click',function(e){
+  const areaBtn=e.target.closest('[data-area]');
+  if(areaBtn){setArea(areaBtn.dataset.area);return}
+  const viewBtn=e.target.closest('[data-view]');
+  if(viewBtn){showView(viewBtn.dataset.view);return}
+  const fileItem=e.target.closest('[data-file]');
+  if(fileItem){openFile(fileItem.dataset.file);return}
+  const action=e.target.closest('[data-action]');
+  if(action){
+    const a=action.dataset.action;
+    if(a==='newFile')openFileForm();
+    else if(a==='saveFile')saveFile();
+    else if(a==='quickDevelopment')addQuickDevelopment();
+    else if(a==='addDevelopment')addDevelopment();
+    else if(a==='addCurrentReminder')addReminder(true);
+    else if(a==='addHearing')addHearing();
+    else if(a==='addReminder')addReminder(false);
+    else if(a==='saveNotification')saveNotification();
+    else if(a==='newDetention')newDetention();
+    else if(a==='saveDetention')saveDetention();
+    return;
+  }
+  const archiveAreaBtn=e.target.closest('[data-archive-area]');
+  if(archiveAreaBtn){
+    archiveArea=archiveAreaBtn.dataset.archiveArea;
+    renderArchive();
+    return;
+  }
+
+  const archiveBtn=e.target.closest('[data-archive-notification]');
+  if(archiveBtn){
+    archiveNotification(archiveBtn.dataset.archiveNotification);
+    return;
+  }
+
+  const unarchiveBtn=e.target.closest('[data-unarchive-notification]');
+  if(unarchiveBtn){
+    unarchiveNotification(unarchiveBtn.dataset.unarchiveNotification);
+    return;
+  }
+
+  const adv=e.target.closest('[data-advance]');
+  if(adv){advanceDetention(adv.dataset.advance);return}
+});
+window.addEventListener('focus',function(){
+  renderNotificationAlerts();
+});
+setInterval(function(){
+  renderNotificationAlerts();
+},60000);
+
+document.getElementById('fileSearch').addEventListener('input',renderFiles);
+document.getElementById('notifArea').addEventListener('change',function(){
+  const a=this.value;
+  document.getElementById('notifFile').innerHTML=db.files.filter(f=>f.area===a).map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join('')||'<option value="">Dosya yok</option>';
+  document.getElementById('notifFile').value='';
+  document.getElementById('notifDuration').innerHTML='<option value="">Süre seçin</option>'+durationOptions(a);
+  previewNotification();
+});
+['notifFile','notifDate','notifDuration','notifElectronic'].forEach(id=>document.getElementById(id).addEventListener('change',previewNotification));
+
+/* İlk açılış */
+document.getElementById('sulhMenu').classList.toggle('hidden',area!=='ceza');
+renderAll();
+showView('home');
+})();
 </script>
-</body></html>
+</body>
+</html>
