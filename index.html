@@ -1,39 +1,22 @@
-
 <!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Avukat Paneli</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#20242a}
-header{padding:18px 20px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:5}
-h1{margin:0;font-size:22px}.wrap{max-width:1050px;margin:auto;padding:18px}
-.area-nav{display:flex;gap:10px;margin:16px 0}.area-nav button{flex:1;border:0;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;background:#e9eaed}.area-nav button.active{background:#222;color:#fff}
-.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.menu button{border:0;background:#fff;padding:14px;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 2px 8px #00000010}
-.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px #0000000b}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{padding:16px;border-radius:12px;background:#f0f1f3}.stat b{display:block;font-size:26px;margin-top:7px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #ccc;border-radius:9px;font:inherit}textarea{min-height:100px}
-button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}button.secondary{background:#eee;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}
-.hidden{display:none!important}.row{display:flex;gap:10px}.row>*{flex:1}.item{border:1px solid #e2e2e2;padding:13px;border-radius:10px;margin:8px 0;cursor:pointer}.muted{color:#70757d;font-size:13px}.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}
-@media(max-width:700px){.menu{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.area-nav{flex-direction:column}.row{flex-direction:column}}
-
-#authScreen{position:fixed;inset:0;background:#f5f6f8;display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999}.login-card{width:min(420px,100%);background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #00000012}.login-card h2{margin-top:0}.login-card button{width:100%;margin-top:10px}.login-error{color:#b42318;font-weight:700;margin-top:10px}.login-card small{color:#70757d}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#eef2f7;color:#172033}
+header{padding:18px 20px;background:#111827;color:#fff;border-bottom:1px solid #253047;position:sticky;top:0;z-index:5;box-shadow:0 3px 14px #0002}
+h1{margin:0;font-size:22px}.wrap{max-width:1100px;margin:auto;padding:18px}
+.area-nav{display:flex;gap:10px;margin:16px 0}.area-nav button{flex:1;border:1px solid #d7deea;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;background:#fff;color:#334155;box-shadow:0 2px 7px #0f172a12;transition:.15s}.area-nav button:hover{transform:translateY(-1px)}.area-nav button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8;box-shadow:0 4px 12px #1d4ed833}
+.menu{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}.menu button{border:1px solid #d8e0ec;background:#fff;color:#334155;padding:14px;border-radius:12px;cursor:pointer;font-weight:800;box-shadow:0 2px 8px #0f172a10}.menu button:hover{background:#f8fafc}.menu button.active{background:#e8f0ff;color:#1d4ed8;border-color:#93b4ff}
+.card{background:#fff;border:1px solid #dbe3ef;border-radius:15px;padding:18px;margin-bottom:14px;box-shadow:0 3px 14px #0f172a0b}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{padding:16px;border-radius:12px;background:#f1f5f9;border:1px solid #dbe3ef}.stat b{display:block;font-size:26px;margin-top:7px;color:#111827}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:#3b82f6}textarea{min-height:100px}
+button.primary{background:#1d4ed8;color:#fff;border:0;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:700}button.primary:hover{background:#1e40af}button.secondary{background:#eef2f7;color:#334155;border:1px solid #d5deea;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:700}.hidden{display:none!important}.row{display:flex;gap:10px}.row>*{flex:1}.item{border:1px solid #dbe3ef;background:#fff;padding:13px;border-radius:11px;margin:8px 0;cursor:pointer}.item:hover{border-color:#a9bde0;background:#fbfdff}.muted{color:#64748b;font-size:13px}.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}.success{color:#067647;font-weight:800}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:800}.notice{padding:12px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;margin:10px 0}.deadline{font-size:18px;font-weight:900;margin-top:6px}
+@media(max-width:700px){.menu{display:flex;flex-direction:column}.grid{grid-template-columns:1fr}.area-nav{flex-direction:column}.row{flex-direction:column}}
 </style>
 </head>
 <body>
-<div id="authScreen">
-  <div class="login-card">
-    <h2>⚖️ Avukat Paneli</h2>
-    <p class="muted">Devam etmek için giriş yapın.</p>
-    <input id="loginEmail" type="email" placeholder="E-posta" autocomplete="email">
-    <input id="loginPassword" type="password" placeholder="Şifre" autocomplete="current-password" style="margin-top:10px">
-    <button class="primary" id="loginBtn">Giriş Yap</button>
-    <div id="loginError" class="login-error"></div>
-  </div>
-</div>
-
 <header><div class="wrap"><h1>⚖️ Avukat Paneli</h1></div></header>
 <div class="wrap">
   <div class="area-nav">
@@ -48,6 +31,8 @@ button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11p
     <button onclick="show('calendar')">📅 Duruşmalar</button>
     <button onclick="show('sulhCeza')">⚖️ Sulh Ceza</button>
     <button onclick="show('reminders')">🔔 Hatırlatıcılar</button>
+    <button onclick="show('tebligatlar')">📨 Tebligatlar</button>
+    <button onclick="show('notifications')">📨 Tebligatlar</button>
   </div>
 
   <section id="home" class="card">
@@ -98,6 +83,28 @@ button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11p
   <section id="calendar" class="card hidden"><h2>Duruşmalar</h2><button class="primary" onclick="addHearing()">+ Duruşma</button><div id="hearingList"></div></section>
   <section id="reminders" class="card hidden"><h2>Hatırlatıcılar</h2><button class="primary" onclick="addReminder()">+ Hatırlatıcı</button><div id="reminderList"></div></section>
 
+<section id="notifications" class="card hidden">
+  <div class="row"><h2 style="flex:1">📨 Genel Tebligat Süre Takibi</h2></div>
+  <p class="muted">Tek tebligat ekranı. Önce Ceza / Hukuk / İcra seçilir, sonra o birimde kayıtlı dosyalar listelenir. Ceza/Hukuk: 7 veya 14 gün · İcra: 3, 5 veya 7 gün.</p>
+  <div class="card" style="background:#f8fafc">
+    <h3>Yeni Tebligat</h3>
+    <div class="row">
+      <select id="notifArea" onchange="updateNotificationFiles();updateNotificationDuration()">
+        <option value="ceza">⚖️ Ceza</option><option value="hukuk">🏛️ Hukuk</option><option value="icra">💰 İcra</option>
+      </select>
+      <select id="notifFile"><option value="">Önce birim seçin</option></select>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <input id="notifDate" type="date" onchange="previewNotification()">
+      <select id="notifDuration" onchange="previewNotification()"></select>
+    </div>
+    <div style="margin-top:10px"><label><input id="notifElectronic" type="checkbox" onchange="previewNotification()" style="width:auto;margin-right:7px"> Elektronik tebligat (UETS)</label></div>
+    <div id="notifPreview" class="notice">Tebligat bilgilerini seçtiğinde süre burada görünecek.</div>
+    <button class="primary" onclick="saveNotification()">Tebligatı Kaydet</button>
+  </div>
+  <h3>Kayıtlı Tebligatlar</h3><div id="notificationList"></div>
+</section>
+
 <section id="sulhCeza" class="card hidden">
   <div class="row">
     <h2 style="flex:1">⚖️ Sulh Ceza — Tutukluluk İtiraz Takibi</h2>
@@ -129,14 +136,22 @@ button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11p
 
 <script>
 const KEY='lawyer_panel_v1';
-let db=JSON.parse(localStorage.getItem(KEY)||'{"files":[],"hearings":[],"reminders":[],"developments":[],"detentions":[]}');
-db.detentions=db.detentions||[];
+let db=JSON.parse(localStorage.getItem(KEY)||'{"files":[],"hearings":[],"reminders":[],"developments":[],"detentions":[],"notifications":[]}');
+db.detentions=db.detentions||[];db.notifications=db.notifications||[];
+let area=localStorage.getItem('lawyer_area')||'ceza', currentFile=null;
+db.detentions=db.detentions||[];db.notifications=(db.notifications||[]);
 let area=localStorage.getItem('lawyer_area')||'ceza', currentFile=null;
 
 const today=()=>new Date().toISOString().slice(0,10);
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
 function setArea(a){area=a;localStorage.setItem('lawyer_area',a);document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+a));show('home');renderAll()}
-function show(id){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='detail')renderDetail();if(id==='files')renderFiles();if(id==='calendar')renderHearings();if(id==='reminders')renderReminders();if(id==='sulhCeza')renderDetention()}
+function show(id){
+  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+  const active=[...document.querySelectorAll('.menu button')].find(b=>
+    (b.getAttribute('onclick')||'').includes("show('"+id+"')")
+  );
+  if(active) active.classList.add('active');
+document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='detail')renderDetail();if(id==='files')renderFiles();if(id==='calendar')renderHearings();if(id==='reminders')renderReminders();if(id==='sulhCeza')renderDetention();if(id==='notifications'){document.getElementById('notifArea').value=area;updateNotificationFiles();updateNotificationDuration();renderNotifications()}}
 function activeFiles(){return db.files.filter(f=>f.area===area)}
 function areaLabel(){return area==='ceza'?'Ceza':area==='hukuk'?'Hukuk':'İcra'}
 function openFileForm(){show('fileForm');document.getElementById('fileOpening').value=today()}
@@ -178,11 +193,29 @@ function renderHome(){
  renderQuick()
 }
 
-function addDaysLocal(dateStr,n){
-  const d=new Date(String(dateStr).slice(0,10)+"T00:00:00");
-  d.setDate(d.getDate()+Number(n));
-  return d.toISOString().slice(0,10);
+function isWeekendDate(s){const d=new Date(String(s).slice(0,10)+"T00:00:00");return d.getDay()===0||d.getDay()===6}
+function holidaySet(year){
+ const fixed=[`${year}-01-01`,`${year}-04-23`,`${year}-05-01`,`${year}-05-19`,`${year}-07-15`,`${year}-08-30`,`${year}-10-29`];
+ if(year===2026)return new Set([...fixed,'2026-03-19','2026-03-20','2026-03-21','2026-03-22','2026-05-26','2026-05-27','2026-05-28','2026-05-29','2026-05-30','2026-10-28']);
+ return new Set(fixed);
 }
+function isOfficialHoliday(s){return holidaySet(Number(String(s).slice(0,4))).has(String(s).slice(0,10))}
+function isAdliTatili(s,a){if(a!=='ceza'&&a!=='hukuk')return false;const md=Number(String(s).slice(5,7))*100+Number(String(s).slice(8,10));return md>=720&&md<=831}
+function addDaysLocal(dateStr,n){const d=new Date(String(dateStr).slice(0,10)+"T00:00:00");d.setDate(d.getDate()+Number(n));return d.toISOString().slice(0,10)}
+function addPeriodWithRules(startStr,duration,a){
+ let d=new Date(String(startStr).slice(0,10)+"T00:00:00"), remaining=Number(duration);
+ while(remaining>1){d.setDate(d.getDate()+1);const x=d.toISOString().slice(0,10);if(isAdliTatili(x,a))continue;remaining--}
+ let out=d.toISOString().slice(0,10);
+ while(isWeekendDate(out)||isOfficialHoliday(out)||isAdliTatili(out,a)){d.setDate(d.getDate()+1);out=d.toISOString().slice(0,10)}
+ return out;
+}
+function notificationDurationOptions(a){return a==='icra'?'<option value="3">3 gün</option><option value="5">5 gün</option><option value="7">7 gün</option>':'<option value="7">1 hafta (7 gün)</option><option value="14">2 hafta (14 gün)</option>'}
+function updateNotificationFiles(){const a=document.getElementById('notifArea').value,q=document.getElementById('notifFile'),files=db.files.filter(f=>f.area===a);q.innerHTML=files.length?files.map(f=>`<option value="${f.id}">${esc(f.no)}${f.title?' — '+esc(f.title):''}</option>`).join(''):'<option value="">Bu birimde kayıtlı dosya yok</option>';previewNotification()}
+function updateNotificationDuration(){const a=document.getElementById('notifArea').value;document.getElementById('notifDuration').innerHTML=notificationDurationOptions(a);previewNotification()}
+function calculateNotification(date,a,duration,electronic){const start=electronic?addDaysLocal(date,5):date;return {start,deadline:addPeriodWithRules(start,duration,a)}}
+function previewNotification(){const el=document.getElementById('notifPreview');if(!el)return;const date=document.getElementById('notifDate')?.value,a=document.getElementById('notifArea')?.value,dur=Number(document.getElementById('notifDuration')?.value||0),e=document.getElementById('notifElectronic')?.checked;if(!date||!dur){el.textContent='Tebligat bilgilerini seçtiğinde süre burada görünecek.';return}const c=calculateNotification(date,a,dur,e);el.innerHTML=`<b>${e?'E-tebligat':'Normal tebligat'}</b> · Süre başlangıcı: <b>${formatDate(c.start)}</b> · Son gün: <b>${formatDate(c.deadline)}</b>`}
+function saveNotification(){const a=document.getElementById('notifArea').value,fid=Number(document.getElementById('notifFile').value),date=document.getElementById('notifDate').value,duration=Number(document.getElementById('notifDuration').value),electronic=document.getElementById('notifElectronic').checked;if(!fid)return alert('Önce kayıtlı bir dosya seç.');if(!date)return alert('Tebligat tarihini seç.');const f=db.files.find(x=>x.id===fid);if(!f)return alert('Dosya bulunamadı.');const c=calculateNotification(date,a,duration,electronic);db.notifications.push({id:Date.now(),area:a,fileId:fid,file:f.no,date,electronic,duration,start:c.start,deadline:c.deadline});save();show('notifications')}
+function renderNotifications(){const el=document.getElementById('notificationList');if(!el)return;const a=db.notifications.filter(x=>x.area===area).sort((x,y)=>x.deadline.localeCompare(y.deadline));el.innerHTML=a.map(n=>{const d=daysUntil(n.deadline),cls=d<0?'danger':d<=3?'warn':'success',label=d<0?`${Math.abs(d)} gün geçti`:d===0?'BUGÜN':`${d} gün kaldı`,f=db.files.find(x=>x.id===n.fileId);return `<div class="item"><div><b>${esc(f?.no||n.file)}</b> <span class="pill">${areaLabel()}</span> <span class="pill">${n.electronic?'E-tebligat':'Normal'}</span></div><div class="muted">Tebliğ: ${formatDate(n.date)} · Süre başlangıcı: ${formatDate(n.start)} · Süre: ${n.duration} gün</div><div class="deadline">Son gün: ${formatDate(n.deadline)}</div><div class="${cls}">${label}</div></div>`}).join('')||'<p class="muted">Bu birimde kayıtlı tebligat yok.</p>'}
 function daysUntil(dateStr){
   const a=new Date(today()+"T00:00:00"), b=new Date(String(dateStr).slice(0,10)+"T00:00:00");
   return Math.ceil((b-a)/86400000);
@@ -236,48 +269,10 @@ function advanceDetention(id){
   save(); renderDetention();
 }
 
-function renderAll(){document.querySelectorAll('.law-area').forEach(()=>{});renderHome();renderFiles();renderHearings();renderReminders();document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+area));
+function renderAll(){renderHome();renderFiles();renderHearings();renderReminders();renderNotifications();document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+area));if(document.getElementById('notifArea')){document.getElementById('notifArea').value=area;updateNotificationFiles();updateNotificationDuration();document.getElementById('notifDate').value=today();}}
 const sc=document.querySelector("button[onclick=\"show('sulhCeza')\"]"); if(sc)sc.style.display=area==="ceza"?"":"none";
 }
 function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 setArea(area);
-</script>
-
-<script>
-// SUPABASE AYARLARI — Publishable key kullan. Secret key KESİNLİKLE kullanma.
-const SUPABASE_URL = "https://eylbiuworndkyfmltlic.supabase.co/";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_j_H9znWmyc6IuyUggOErUg_RtYMQ0ST";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-const authScreen=document.getElementById('authScreen');
-const loginBtn=document.getElementById('loginBtn');
-const loginError=document.getElementById('loginError');
-
-async function checkAuth(){
-  if(SUPABASE_URL.includes('BURAYA_') || SUPABASE_PUBLISHABLE_KEY.includes('BURAYA_')){
-    loginError.textContent='Supabase bağlantı bilgileri index.html içine eklenmemiş.';
-    return;
-  }
-  const {data:{session}}=await supabaseClient.auth.getSession();
-  if(session){authScreen.style.display='none';}else{authScreen.style.display='flex';}
-}
-
-loginBtn.addEventListener('click',async()=>{
-  loginError.textContent='';
-  loginBtn.disabled=true;
-  loginBtn.textContent='Giriş yapılıyor...';
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
-  if(error){loginError.textContent=error.message;loginBtn.disabled=false;loginBtn.textContent='Giriş Yap';return;}
-  authScreen.style.display='none';
-  loginBtn.disabled=false;loginBtn.textContent='Giriş Yap';
-});
-
-supabaseClient.auth.onAuthStateChange((_event,session)=>{
-  authScreen.style.display=session?'none':'flex';
-});
-
-checkAuth();
 </script>
 </body></html>
