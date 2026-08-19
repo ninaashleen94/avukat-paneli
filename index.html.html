@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avukat Paneli</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#20242a}
+header{padding:18px 20px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:5}
+h1{margin:0;font-size:22px}.wrap{max-width:1050px;margin:auto;padding:18px}
+.area-nav{display:flex;gap:10px;margin:16px 0}.area-nav button{flex:1;border:0;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;background:#e9eaed}.area-nav button.active{background:#222;color:#fff}
+.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.menu button{border:0;background:#fff;padding:14px;border-radius:12px;cursor:pointer;font-weight:700;box-shadow:0 2px 8px #00000010}
+.card{background:#fff;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px #0000000b}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{padding:16px;border-radius:12px;background:#f0f1f3}.stat b{display:block;font-size:26px;margin-top:7px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccc;border-radius:9px;font:inherit}textarea{min-height:100px}
+button.primary{background:#222;color:#fff;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}button.secondary{background:#eee;border:0;border-radius:9px;padding:11px 15px;cursor:pointer}
+.hidden{display:none!important}.row{display:flex;gap:10px}.row>*{flex:1}.item{border:1px solid #e2e2e2;padding:13px;border-radius:10px;margin:8px 0;cursor:pointer}.muted{color:#70757d;font-size:13px}.danger{color:#b42318;font-weight:800}.warn{color:#a15c00;font-weight:800}
+@media(max-width:700px){.menu{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.area-nav{flex-direction:column}.row{flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>⚖️ Avukat Paneli</h1></div></header>
+<div class="wrap">
+  <div class="area-nav">
+    <button id="area-ceza" onclick="setArea('ceza')">⚖️ Ceza</button>
+    <button id="area-hukuk" onclick="setArea('hukuk')">🏛️ Hukuk</button>
+    <button id="area-icra" onclick="setArea('icra')">💰 İcra</button>
+  </div>
+
+  <div class="menu">
+    <button onclick="show('home')">🏠 Ana Sayfa</button>
+    <button onclick="show('files')">📁 Dosyalar</button>
+    <button onclick="show('calendar')">📅 Duruşmalar</button>
+    <button onclick="show('sulhCeza')">⚖️ Sulh Ceza</button>
+    <button onclick="show('reminders')">🔔 Hatırlatıcılar</button>
+  </div>
+
+  <section id="home" class="card">
+    <h2 id="homeTitle">Ceza</h2>
+    <div class="grid">
+      <div class="stat">Aktif dosya<b id="statFiles">0</b></div>
+      <div class="stat">Yaklaşan duruşma<b id="statHearings">0</b></div>
+      <div class="stat">Yaklaşan işler<b id="statReminders">0</b></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>⚡ Hızlı Gelişme Ekle</h3>
+      <div class="row">
+        <select id="quickFile"></select>
+        <input id="quickDate" type="date">
+      </div>
+      <textarea id="quickText" placeholder="Dosyada ne oldu?"></textarea>
+      <button class="primary" onclick="addDevelopment()">Gelişmeyi Dosyaya İşle</button>
+    </div>
+    <h3>Son Gelişmeler</h3><div id="recent"></div>
+  </section>
+
+  <section id="files" class="card hidden">
+    <div class="row"><h2 style="flex:1">Dosyalar</h2><button class="primary" onclick="openFileForm()">+ Yeni Dosya</button></div>
+    <input id="fileSearch" placeholder="Dosya ara..." oninput="renderFiles()">
+    <div id="fileList"></div>
+  </section>
+
+  <section id="fileForm" class="card hidden">
+    <h2>Yeni Dosya</h2>
+    <div class="row"><input id="fileNo" placeholder="Dosya no"><input id="fileTitle" placeholder="Kısa başlık"></div>
+    <div class="row" style="margin-top:10px"><input id="fileOpening" type="date"><select id="fileStatus"><option>Devam ediyor</option><option>Beklemede</option><option>Sonuçlandı</option></select></div>
+    <div style="margin-top:10px"><textarea id="fileNote" placeholder="Kısa not (isteğe bağlı)"></textarea></div>
+    <button class="primary" onclick="saveFile()">Kaydet</button> <button class="secondary" onclick="show('files')">Vazgeç</button>
+  </section>
+
+  <section id="detail" class="card hidden">
+    <button class="secondary" onclick="show('files')">← Dosyalara dön</button>
+    <h2 id="detailTitle"></h2><div id="detailMeta" class="muted"></div>
+    <div class="card">
+      <h3>📜 Dosya Kronolojisi</h3>
+      <div class="row"><input id="devDate" type="date"><button class="primary" onclick="addDevelopmentToCurrent()">+ Gelişme Ekle</button></div>
+      <textarea id="devText" placeholder="Bu dosyada ne oldu?"></textarea>
+    </div>
+    <div id="timeline"></div>
+    <div class="card"><button class="primary" onclick="addReminderForCurrent()">🔔 Hatırlatıcı ekle</button></div>
+  </section>
+
+  <section id="calendar" class="card hidden"><h2>Duruşmalar</h2><button class="primary" onclick="addHearing()">+ Duruşma</button><div id="hearingList"></div></section>
+  <section id="reminders" class="card hidden"><h2>Hatırlatıcılar</h2><button class="primary" onclick="addReminder()">+ Hatırlatıcı</button><div id="reminderList"></div></section>
+
+<section id="sulhCeza" class="card hidden">
+  <div class="row">
+    <h2 style="flex:1">⚖️ Sulh Ceza — Tutukluluk İtiraz Takibi</h2>
+    <button class="primary" onclick="openDetentionForm()">+ Yeni Takip</button>
+  </div>
+  <p class="muted">Tutukluluk inceleme/itiraz tarihlerini 30 günlük takip döngüsüyle gösterir.</p>
+  <input id="detentionSearch" placeholder="Dosya ara..." oninput="renderDetention()">
+  <div id="detentionList"></div>
+</section>
+
+<section id="detentionForm" class="card hidden">
+  <h2>Yeni Tutukluluk Takibi</h2>
+  <div class="row">
+    <input id="detFileNo" placeholder="Dosya no">
+    <input id="detPerson" placeholder="Kısa başlık / kişi">
+  </div>
+  <div class="row" style="margin-top:10px">
+    <input id="detStart" type="date">
+    <input id="detNext" type="date">
+  </div>
+  <div style="margin-top:10px">
+    <textarea id="detNote" placeholder="Kısa not (isteğe bağlı)"></textarea>
+  </div>
+  <p class="muted">Sonraki inceleme tarihi boş bırakılırsa başlangıç tarihinden 30 gün sonrası hesaplanır.</p>
+  <button class="primary" onclick="saveDetention()">Kaydet</button>
+  <button class="secondary" onclick="show('sulhCeza')">Vazgeç</button>
+</section>
+</div>
+
+<script>
+const KEY='lawyer_panel_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'{"files":[],"hearings":[],"reminders":[],"developments":[],"detentions":[]}');
+db.detentions=db.detentions||[];
+let area=localStorage.getItem('lawyer_area')||'ceza', currentFile=null;
+
+const today=()=>new Date().toISOString().slice(0,10);
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function setArea(a){area=a;localStorage.setItem('lawyer_area',a);document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+a));show('home');renderAll()}
+function show(id){document.querySelectorAll('section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='detail')renderDetail();if(id==='files')renderFiles();if(id==='calendar')renderHearings();if(id==='reminders')renderReminders();if(id==='sulhCeza')renderDetention()}
+function activeFiles(){return db.files.filter(f=>f.area===area)}
+function areaLabel(){return area==='ceza'?'Ceza':area==='hukuk'?'Hukuk':'İcra'}
+function openFileForm(){show('fileForm');document.getElementById('fileOpening').value=today()}
+function saveFile(){
+ const no=document.getElementById('fileNo').value.trim();if(!no)return alert('Dosya numarası gir.');
+ db.files.push({id:Date.now(),area,no,title:document.getElementById('fileTitle').value.trim(),opening:document.getElementById('fileOpening').value||today(),status:document.getElementById('fileStatus').value,note:document.getElementById('fileNote').value.trim()});
+ document.getElementById('fileNo').value='';document.getElementById('fileTitle').value='';document.getElementById('fileNote').value='';save();show('files')
+}
+function renderFiles(){
+ const q=(document.getElementById('fileSearch')?.value||'').toLowerCase();
+ const arr=activeFiles().filter(f=>(f.no+' '+f.title).toLowerCase().includes(q));
+ document.getElementById('fileList').innerHTML=arr.map(f=>`<div class="item" onclick="openFile(${f.id})"><b>${esc(f.no)}</b> ${esc(f.title||'')}<div class="muted">${esc(f.status)} · ${f.opening}</div></div>`).join('')||'<p class="muted">Dosya yok.</p>';
+}
+function openFile(id){currentFile=id;show('detail')}
+function renderDetail(){
+ const f=db.files.find(x=>x.id===currentFile);if(!f)return;
+ document.getElementById('detailTitle').textContent=f.no+(f.title?' — '+f.title:'');
+ document.getElementById('detailMeta').textContent=areaLabel()+' · '+f.status+' · Açılış '+f.opening;
+ const arr=db.developments.filter(d=>d.fileId===f.id).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ document.getElementById('timeline').innerHTML=arr.map(d=>`<div class="item"><b>${d.date}</b><div>${esc(d.text)}</div></div>`).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+ document.getElementById('devDate').value=today()
+}
+function addDevelopmentToCurrent(){const date=document.getElementById('devDate').value||today(),text=document.getElementById('devText').value.trim();if(!text)return alert('Gelişme yaz.');db.developments.push({id:Date.now(),fileId:currentFile,date,text});document.getElementById('devText').value='';save();renderDetail()}
+function addDevelopment(){const fid=Number(document.getElementById('quickFile').value),date=document.getElementById('quickDate').value||today(),text=document.getElementById('quickText').value.trim();if(!fid||!text)return alert('Dosya ve gelişme gir.');db.developments.push({id:Date.now(),fileId:fid,date,text});document.getElementById('quickText').value='';save();show('home')}
+function renderQuick(){const q=document.getElementById('quickFile');if(!q)return;q.innerHTML=activeFiles().map(f=>`<option value="${f.id}">${esc(f.no)} ${esc(f.title||'')}</option>`).join('');document.getElementById('quickDate').value=today()}
+function addHearing(){const fid=prompt('Dosya numarası?');if(!fid)return;const date=prompt('Duruşma tarihi (YYYY-AA-GG)?',today());if(!date)return;db.hearings.push({id:Date.now(),area,file:fid,date});save()}
+function renderHearings(){const a=db.hearings.filter(h=>h.area===area).sort((x,y)=>x.date.localeCompare(y.date));document.getElementById('hearingList').innerHTML=a.map(h=>`<div class="item"><b>${h.date}</b> — ${esc(h.file)}</div>`).join('')||'<p class="muted">Duruşma yok.</p>'}
+function addReminderForCurrent(){const date=prompt('Hatırlatıcı tarihi (YYYY-AA-GG)?',today());if(!date)return;const text=prompt('Hatırlatıcı?');if(!text)return;db.reminders.push({id:Date.now(),area,fileId:currentFile,date,text});save()}
+function addReminder(){const date=prompt('Tarih (YYYY-AA-GG)?',today());if(!date)return;const text=prompt('Hatırlatıcı?');if(!text)return;db.reminders.push({id:Date.now(),area,fileId:null,date,text});save()}
+function renderReminders(){const a=db.reminders.filter(r=>r.area===area).sort((x,y)=>x.date.localeCompare(y.date));document.getElementById('reminderList').innerHTML=a.map(r=>`<div class="item"><b>${r.date}</b> — ${esc(r.text)}</div>`).join('')||'<p class="muted">Hatırlatıcı yok.</p>'}
+function renderHome(){
+ document.getElementById('homeTitle').textContent=areaLabel();
+ const fs=activeFiles(),hs=db.hearings.filter(h=>h.area===area),rs=db.reminders.filter(r=>r.area===area);
+ document.getElementById('statFiles').textContent=fs.length;
+ document.getElementById('statHearings').textContent=hs.filter(h=>h.date>=today()).length;
+ document.getElementById('statReminders').textContent=rs.filter(r=>r.date>=today()).length;
+ const recent=db.developments.filter(d=>{const f=db.files.find(x=>x.id===d.fileId);return f&&f.area===area}).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,8);
+ document.getElementById('recent').innerHTML=recent.map(d=>{const f=db.files.find(x=>x.id===d.fileId);return `<div class="item" onclick="openFile(${f.id});show('detail')"><b>${d.date} · ${esc(f.no)}</b><div>${esc(d.text)}</div></div>`}).join('')||'<p class="muted">Henüz gelişme yok.</p>';
+ renderQuick()
+}
+
+function addDaysLocal(dateStr,n){
+  const d=new Date(String(dateStr).slice(0,10)+"T00:00:00");
+  d.setDate(d.getDate()+Number(n));
+  return d.toISOString().slice(0,10);
+}
+function daysUntil(dateStr){
+  const a=new Date(today()+"T00:00:00"), b=new Date(String(dateStr).slice(0,10)+"T00:00:00");
+  return Math.ceil((b-a)/86400000);
+}
+function openDetentionForm(){
+  if(area!=="ceza"){alert("Sulh Ceza yalnızca Ceza alanında kullanılabilir.");return}
+  show('detentionForm');
+  document.getElementById('detStart').value=today();
+  document.getElementById('detNext').value=addDaysLocal(today(),30);
+}
+function saveDetention(){
+  const fileNo=document.getElementById('detFileNo').value.trim();
+  const person=document.getElementById('detPerson').value.trim();
+  const start=document.getElementById('detStart').value||today();
+  const next=document.getElementById('detNext').value||addDaysLocal(start,30);
+  if(!fileNo)return alert("Dosya no gir.");
+  db.detentions.push({
+    id:Date.now(), area:"ceza", fileNo, person, start, next,
+    note:document.getElementById('detNote').value.trim()
+  });
+  document.getElementById('detFileNo').value='';
+  document.getElementById('detPerson').value='';
+  document.getElementById('detNote').value='';
+  save(); show('sulhCeza');
+}
+function renderDetention(){
+  const q=(document.getElementById('detentionSearch')?.value||'').toLowerCase();
+  const arr=db.detentions.filter(x=>x.area==="ceza" && (x.fileNo+' '+x.person+' '+x.note).toLowerCase().includes(q))
+    .sort((a,b)=>a.next.localeCompare(b.next));
+  const el=document.getElementById('detentionList'); if(!el)return;
+  el.innerHTML=arr.map(x=>{
+    const d=daysUntil(x.next);
+    let cls=d<0?'danger':d<=3?'warn':'';
+    let label=d<0?`${Math.abs(d)} gün geçti`:d===0?'BUGÜN':d<=3?`⚠️ ${d} gün kaldı`:`${d} gün kaldı`;
+    return `<div class="item">
+      <div><b>${esc(x.fileNo)}</b> ${esc(x.person||'')}</div>
+      <div class="muted">Son takip: ${x.start} · Sonraki inceleme/itiraz: <b>${x.next}</b></div>
+      <div class="${cls}">${label}</div>
+      ${x.note?`<div class="muted">${esc(x.note)}</div>`:''}
+      <div style="margin-top:8px">
+        <button class="secondary" onclick="advanceDetention(${x.id})">30 Günlük Yeni Tarih Oluştur</button>
+      </div>
+    </div>`;
+  }).join('')||'<p class="muted">Tutukluluk takibi yok.</p>';
+}
+function advanceDetention(id){
+  const x=db.detentions.find(z=>z.id===id); if(!x)return;
+  const base=x.next;
+  x.start=base;
+  x.next=addDaysLocal(base,30);
+  save(); renderDetention();
+}
+
+function renderAll(){document.querySelectorAll('.law-area').forEach(()=>{});renderHome();renderFiles();renderHearings();renderReminders();document.querySelectorAll('.area-nav button').forEach(x=>x.classList.toggle('active',x.id==='area-'+area));
+const sc=document.querySelector("button[onclick=\"show('sulhCeza')\"]"); if(sc)sc.style.display=area==="ceza"?"":"none";
+}
+function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+setArea(area);
+</script>
+</body></html>
